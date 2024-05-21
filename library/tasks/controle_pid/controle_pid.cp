@@ -120,26 +120,34 @@ void TASKS_main();
 void CONTROLE_PID_main();
 #line 31 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/controle_pid/controle_pid.c"
 static enum {
- T_500MS = 0,
+ T_10MS = 0,
  T_1S,
  T_LENGTH
 };
 
 
-static float calculate_PID(float setpoint, float measured_value);
+static float calculate_PID(float setpoint, float nivel_tanque);
 
 
-static SOFT_TIMER_t timer[TASK_LENGTH];
+static SOFT_TIMER_t timer[T_LENGTH];
 
 
+static float Kp = 5.0, Ki = 0.2, Kd = 0.1;
 
-float setpoint = 50.0;
-float tank_level = 0.0;
-float Kp = 5.0, Ki = 0.2, Kd = 0.1;
-float integral = 0.0, previous_error = 0.0;
-float max_integral = 100.0;
-float previous_derivative = 0.0;
-float alpha = 0.1;
+
+static float setpoint = 50.0;
+
+
+static float tank_level = 0.0;
+
+static float integral = 0.0, previous_error = 0.0;
+
+
+static float max_integral = 100.0;
+static float previous_derivative = 0.0;
+
+
+static float alpha = 0.1;
 
 static float control_output = 0;
 static unsigned value_pwm = 0;
@@ -148,7 +156,7 @@ void CONTROLE_PID_main()
 {
   (writeBuffer[6])  = TASK_CONTROLE_PID;
 
- if (SOFT_TIMER_delay_ms(&timer[0], 10))
+ if (SOFT_TIMER_delay_ms(&timer[T_10MS], 10))
  {
  tank_level =  (readBuffer[13] | (readBuffer[14] << 8)) ;
  setpoint =  ADC_variable.an[1] ;
@@ -157,35 +165,43 @@ void CONTROLE_PID_main()
 
  if (control_output > 0)
  {
-
-  writeBuffer[18] = (unsigned)control_output; writeBuffer[19] = ((unsigned)control_output >> 8) ;
   writeBuffer[20] = 0; writeBuffer[21] = (0 >> 8) ;
 
+
+  writeBuffer[18] = (unsigned)control_output; writeBuffer[19] = ((unsigned)control_output >> 8) ;
  value_pwm = (control_output / 1023) * 100;
  PWM_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
  }
  else
  {
-  writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
   writeBuffer[20] = (unsigned)-control_output; writeBuffer[21] = ((unsigned)-control_output >> 8) ;
 
+
+  writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
  PWM_set_duty_cycle(0);
  }
  }
 }
 
-static float calculate_PID(float setpoint, float measured_value)
+static float calculate_PID(float setpoint, float nivel_tanque)
 {
- float error = setpoint - measured_value;
+ float error = setpoint - nivel_tanque;
  float derivative;
+
  integral += error;
+
  if (integral > max_integral)
  integral = max_integral;
+
  if (integral < -max_integral)
  integral = -max_integral;
+
  derivative = (error - previous_error);
+
+
  derivative = alpha * derivative + (1 - alpha) * previous_derivative;
  previous_error = error;
  previous_derivative = derivative;
+
  return (Kp * error) + (Ki * integral) + (Kd * derivative);
 }
