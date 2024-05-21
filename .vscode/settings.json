@@ -1,0 +1,23 @@
+{
+    "cmake.configureOnOpen": true,
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "*.c": "c",
+        "*.cs": "csharp",
+        "timer.h": "c",
+        "timer0.h": "c",
+        "usb.h": "c",
+        "gpio.h": "c",
+        "pwm.h": "c",
+        "macros.h": "c",
+        "system.h": "c",
+        "interrupt.h": "c",
+        "inc.h": "c",
+        "blink_portd.h": "c",
+        "kernel.h": "c",
+        "tasks.h": "c",
+        "livre.h": "c",
+        "controle_pid.h": "c",
+        "semaforo.h": "c"
+    }
+}

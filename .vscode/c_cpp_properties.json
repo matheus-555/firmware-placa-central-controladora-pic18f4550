@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:\\ProgramFiles\\MinGW64\\bin\\gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "windows-gcc-x64"
+        },
+        {
+            "name": "PIC18F",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\Defs",
+                "D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\uses\\P18"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\mikroCPIC1618.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "${default}",
+            "compilerArgs": [
+                "-MSF -DBG -pP18F4550 -DL -O11111114 -fo20 -N\"D:\\Area de Trabalho\\Projeto Sistema Central de Controle\\Firmware_PIC18F4550\\central_controle.mcppi\" -SP\"D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\Defs\\\" -SP\"D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\uses\\P18\\\" -SP\"D:\\Area de Trabalho\\Projeto Sistema Central de Controle\\Firmware_PIC18F4550\\\" -IP\"D:\\ProgramFiles\\Mikroelektronika\\mikroC PRO for PIC\\uses\\P18\\\" \"main.c\" \"__Lib_Math.mcl\" \"__Lib_MathDouble.mcl\" \"__Lib_System.mcl\" \"__Lib_Delays.mcl\""
+            ]
+        }
+    ],
+    "version": 4
+}
