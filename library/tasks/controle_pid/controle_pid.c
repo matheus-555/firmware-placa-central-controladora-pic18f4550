@@ -41,7 +41,7 @@ static float calculate_PID(float setpoint, float nivel_tanque);
 static SOFT_TIMER_t timer[T_LENGTH];
 
 // --- Parâmetros PID
-static float Kp = 5.0, Ki = 0.2, Kd = 0.1;
+static float Kp = 10.0, Ki = 0.5, Kd = 0.2;
 
 // Ponto de ajuste do nível do tanque
 static float setpoint = 50.0;
