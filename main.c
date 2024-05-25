@@ -1,7 +1,5 @@
 #include "library/system/system.h"
 
-#define DEBUG 0
-
 #if DEBUG == 1
 #define SET_BIT set_bit(LATC, 2)
 #define CLR_BIT clr_bit(LATC, 2)
@@ -57,8 +55,7 @@ void system_init()
      GPIO_init();
 
 #if DEBUG == 0
-     // PWM com 5KHz
-     PWM_init(5E3);
+     PWM_init(3E3);
 #else
      TRISC &= ~(1 << TRISC2);
      LATC &= ~(1 << TRISC2);

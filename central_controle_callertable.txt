@@ -4,25 +4,10 @@ main
 		ADC_Init
 		GPIO_init
 		PWM_init
-			Mul_32x32_FP
-				RES032
-				SETFOV32
-				SETFUN32
-			Div_32x32_FP
-				SETFDZ32
-				RES032
-				SETFOV32
-				SETFUN32
-			Sub_32x32_FP
-				Add_32x32_FP
-					NRM4032
-						SETFUN32
-						FIXSIGN32
-						SETFOV32
-						RES032
-					SETFOV32
-			double2byte
+			double2word
 				SETIOV3224
+			PWM_SetFrequency
+				Div_32x32_U
 		USB_init
 			HID_Enable
 				GetMaxStrignDscIndex

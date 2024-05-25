@@ -23,7 +23,7 @@ void ADC_read_all();
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 39 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
+#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/interrupt/interrupt.h"
@@ -63,9 +63,10 @@ void GPIO_init();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/pwm/pwm.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/pwm/../../system/system.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/pwm/../macros/macros.h"
-#line 9 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/pwm/pwm.h"
+#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/pwm/pwm.h"
 void PWM_init(double freq_pwm);
-void PWM_set_duty_cycle(unsigned char duty_porcent);
+void PWM1_set_duty_cycle(unsigned char duty_porcent);
+void PWM2_set_duty_cycle(unsigned char duty_porcent);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/soft_timer/soft_timer.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/soft_timer/../inc.h"
 #line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/soft_timer/soft_timer.h"
@@ -165,20 +166,25 @@ void CONTROLE_PID_main()
 
  if (control_output > 0)
  {
+
   writeBuffer[20] = 0; writeBuffer[21] = (0 >> 8) ;
+ PWM2_set_duty_cycle(0);
 
 
   writeBuffer[18] = (unsigned)control_output; writeBuffer[19] = ((unsigned)control_output >> 8) ;
  value_pwm = (control_output / 1023) * 100;
- PWM_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+ PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
  }
  else
  {
-  writeBuffer[20] = (unsigned)-control_output; writeBuffer[21] = ((unsigned)-control_output >> 8) ;
-
 
   writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
- PWM_set_duty_cycle(0);
+ PWM1_set_duty_cycle(0);
+
+
+  writeBuffer[20] = (unsigned)-control_output; writeBuffer[21] = ((unsigned)-control_output >> 8) ;
+ value_pwm = (-control_output / 1023) * 100;
+ PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
  }
  }
 }

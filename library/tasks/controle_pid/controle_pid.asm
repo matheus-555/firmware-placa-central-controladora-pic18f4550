@@ -104,10 +104,13 @@ _CONTROLE_PID_main:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_CONTROLE_PID_main1
-;controle_pid.c,77 :: 		PID_discharge_valve(0);
+;controle_pid.c,78 :: 		PID_discharge_valve(0);
 	CLRF        _writeBuffer+20 
 	CLRF        _writeBuffer+21 
-;controle_pid.c,80 :: 		PID_fill_valve((unsigned)control_output);
+;controle_pid.c,79 :: 		PWM2_set_duty_cycle(0);
+	CLRF        FARG_PWM2_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM2_set_duty_cycle+0, 0
+;controle_pid.c,82 :: 		PID_fill_valve((unsigned)control_output);
 	MOVF        controle_pid_control_output+0, 0 
 	MOVWF       R0 
 	MOVF        controle_pid_control_output+1, 0 
@@ -124,7 +127,7 @@ _CONTROLE_PID_main:
 	CLRF        R3 
 	MOVF        R2, 0 
 	MOVWF       _writeBuffer+19 
-;controle_pid.c,81 :: 		value_pwm = (control_output / 1023) * 100;
+;controle_pid.c,83 :: 		value_pwm = (control_output / 1023) * 100;
 	MOVLW       0
 	MOVWF       R4 
 	MOVLW       192
@@ -156,16 +159,16 @@ _CONTROLE_PID_main:
 	MOVWF       controle_pid_value_pwm+0 
 	MOVF        R1, 0 
 	MOVWF       controle_pid_value_pwm+1 
-;controle_pid.c,82 :: 		PWM_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+;controle_pid.c,84 :: 		PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
 	MOVLW       0
 	MOVWF       R2 
 	MOVF        R1, 0 
 	SUBWF       R2, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__CONTROLE_PID_main8
+	GOTO        L__CONTROLE_PID_main10
 	MOVF        R0, 0 
 	SUBLW       100
-L__CONTROLE_PID_main8:
+L__CONTROLE_PID_main10:
 	BTFSC       STATUS+0, 0 
 	GOTO        L_CONTROLE_PID_main2
 	MOVLW       100
@@ -180,12 +183,18 @@ L_CONTROLE_PID_main2:
 	MOVWF       ?FLOC___CONTROLE_PID_mainT24+1 
 L_CONTROLE_PID_main3:
 	MOVF        ?FLOC___CONTROLE_PID_mainT24+0, 0 
-	MOVWF       FARG_PWM_set_duty_cycle_duty_porcent+0 
-	CALL        _PWM_set_duty_cycle+0, 0
-;controle_pid.c,83 :: 		}
+	MOVWF       FARG_PWM1_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM1_set_duty_cycle+0, 0
+;controle_pid.c,85 :: 		}
 	GOTO        L_CONTROLE_PID_main4
 L_CONTROLE_PID_main1:
-;controle_pid.c,86 :: 		PID_discharge_valve((unsigned)-control_output);
+;controle_pid.c,89 :: 		PID_fill_valve(0);
+	CLRF        _writeBuffer+18 
+	CLRF        _writeBuffer+19 
+;controle_pid.c,90 :: 		PWM1_set_duty_cycle(0);
+	CLRF        FARG_PWM1_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM1_set_duty_cycle+0, 0
+;controle_pid.c,93 :: 		PID_discharge_valve((unsigned)-control_output);
 	MOVLW       0
 	XORWF       controle_pid_control_output+0, 0 
 	MOVWF       R0 
@@ -219,25 +228,81 @@ L_CONTROLE_PID_main1:
 	CLRF        R3 
 	MOVF        R2, 0 
 	MOVWF       _writeBuffer+21 
-;controle_pid.c,89 :: 		PID_fill_valve(0);
-	CLRF        _writeBuffer+18 
-	CLRF        _writeBuffer+19 
-;controle_pid.c,90 :: 		PWM_set_duty_cycle(0);
-	CLRF        FARG_PWM_set_duty_cycle_duty_porcent+0 
-	CALL        _PWM_set_duty_cycle+0, 0
-;controle_pid.c,91 :: 		}
+;controle_pid.c,94 :: 		value_pwm = (-control_output / 1023) * 100;
+	MOVLW       0
+	XORWF       controle_pid_control_output+0, 0 
+	MOVWF       R0 
+	MOVLW       0
+	XORWF       controle_pid_control_output+1, 0 
+	MOVWF       R1 
+	MOVLW       128
+	XORWF       controle_pid_control_output+2, 0 
+	MOVWF       R2 
+	MOVLW       0
+	XORWF       controle_pid_control_output+3, 0 
+	MOVWF       R3 
+	MOVLW       0
+	MOVWF       R4 
+	MOVLW       192
+	MOVWF       R5 
+	MOVLW       127
+	MOVWF       R6 
+	MOVLW       136
+	MOVWF       R7 
+	CALL        _Div_32x32_FP+0, 0
+	MOVLW       0
+	MOVWF       R4 
+	MOVLW       0
+	MOVWF       R5 
+	MOVLW       72
+	MOVWF       R6 
+	MOVLW       133
+	MOVWF       R7 
+	CALL        _Mul_32x32_FP+0, 0
+	CALL        _double2word+0, 0
+	MOVF        R0, 0 
+	MOVWF       controle_pid_value_pwm+0 
+	MOVF        R1, 0 
+	MOVWF       controle_pid_value_pwm+1 
+;controle_pid.c,95 :: 		PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+	MOVLW       0
+	MOVWF       R2 
+	MOVF        R1, 0 
+	SUBWF       R2, 0 
+	BTFSS       STATUS+0, 2 
+	GOTO        L__CONTROLE_PID_main11
+	MOVF        R0, 0 
+	SUBLW       100
+L__CONTROLE_PID_main11:
+	BTFSC       STATUS+0, 0 
+	GOTO        L_CONTROLE_PID_main5
+	MOVLW       100
+	MOVWF       ?FLOC___CONTROLE_PID_mainT44+0 
+	MOVLW       0
+	MOVWF       ?FLOC___CONTROLE_PID_mainT44+1 
+	GOTO        L_CONTROLE_PID_main6
+L_CONTROLE_PID_main5:
+	MOVF        controle_pid_value_pwm+0, 0 
+	MOVWF       ?FLOC___CONTROLE_PID_mainT44+0 
+	MOVF        controle_pid_value_pwm+1, 0 
+	MOVWF       ?FLOC___CONTROLE_PID_mainT44+1 
+L_CONTROLE_PID_main6:
+	MOVF        ?FLOC___CONTROLE_PID_mainT44+0, 0 
+	MOVWF       FARG_PWM2_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM2_set_duty_cycle+0, 0
+;controle_pid.c,96 :: 		}
 L_CONTROLE_PID_main4:
-;controle_pid.c,92 :: 		}
+;controle_pid.c,97 :: 		}
 L_CONTROLE_PID_main0:
-;controle_pid.c,93 :: 		}
+;controle_pid.c,98 :: 		}
 L_end_CONTROLE_PID_main:
 	RETURN      0
 ; end of _CONTROLE_PID_main
 
 controle_pid_calculate_PID:
 
-;controle_pid.c,95 :: 		static float calculate_PID(float setpoint, float nivel_tanque)
-;controle_pid.c,97 :: 		float error = setpoint - nivel_tanque;
+;controle_pid.c,100 :: 		static float calculate_PID(float setpoint, float nivel_tanque)
+;controle_pid.c,102 :: 		float error = setpoint - nivel_tanque;
 	MOVF        FARG_controle_pid_calculate_PID_nivel_tanque+0, 0 
 	MOVWF       R4 
 	MOVF        FARG_controle_pid_calculate_PID_nivel_tanque+1, 0 
@@ -263,7 +328,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_calculate_PID_error_L0+2 
 	MOVF        R3, 0 
 	MOVWF       controle_pid_calculate_PID_error_L0+3 
-;controle_pid.c,100 :: 		integral += error;
+;controle_pid.c,105 :: 		integral += error;
 	MOVF        controle_pid_integral+0, 0 
 	MOVWF       R4 
 	MOVF        controle_pid_integral+1, 0 
@@ -281,7 +346,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_integral+2 
 	MOVF        R3, 0 
 	MOVWF       controle_pid_integral+3 
-;controle_pid.c,102 :: 		if (integral > max_integral)
+;controle_pid.c,107 :: 		if (integral > max_integral)
 	MOVF        R0, 0 
 	MOVWF       R4 
 	MOVF        R1, 0 
@@ -305,8 +370,8 @@ controle_pid_calculate_PID:
 	MOVWF       R0 
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_controle_pid_calculate_PID5
-;controle_pid.c,103 :: 		integral = max_integral; // Limitar integral para antiwindup
+	GOTO        L_controle_pid_calculate_PID7
+;controle_pid.c,108 :: 		integral = max_integral; // Limitar integral para antiwindup
 	MOVF        controle_pid_max_integral+0, 0 
 	MOVWF       controle_pid_integral+0 
 	MOVF        controle_pid_max_integral+1, 0 
@@ -315,8 +380,8 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_integral+2 
 	MOVF        controle_pid_max_integral+3, 0 
 	MOVWF       controle_pid_integral+3 
-L_controle_pid_calculate_PID5:
-;controle_pid.c,105 :: 		if (integral < -max_integral)
+L_controle_pid_calculate_PID7:
+;controle_pid.c,110 :: 		if (integral < -max_integral)
 	MOVLW       0
 	XORWF       controle_pid_max_integral+0, 0 
 	MOVWF       R4 
@@ -344,8 +409,8 @@ L_controle_pid_calculate_PID5:
 	MOVWF       R0 
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_controle_pid_calculate_PID6
-;controle_pid.c,106 :: 		integral = -max_integral; // Limitar integral para antiwindup
+	GOTO        L_controle_pid_calculate_PID8
+;controle_pid.c,111 :: 		integral = -max_integral; // Limitar integral para antiwindup
 	MOVLW       0
 	XORWF       controle_pid_max_integral+0, 0 
 	MOVWF       controle_pid_integral+0 
@@ -358,8 +423,8 @@ L_controle_pid_calculate_PID5:
 	MOVLW       0
 	XORWF       controle_pid_max_integral+3, 0 
 	MOVWF       controle_pid_integral+3 
-L_controle_pid_calculate_PID6:
-;controle_pid.c,108 :: 		derivative = (error - previous_error);
+L_controle_pid_calculate_PID8:
+;controle_pid.c,113 :: 		derivative = (error - previous_error);
 	MOVF        controle_pid_previous_error+0, 0 
 	MOVWF       R4 
 	MOVF        controle_pid_previous_error+1, 0 
@@ -377,7 +442,7 @@ L_controle_pid_calculate_PID6:
 	MOVF        controle_pid_calculate_PID_error_L0+3, 0 
 	MOVWF       R3 
 	CALL        _Sub_32x32_FP+0, 0
-;controle_pid.c,111 :: 		derivative = alpha * derivative + (1 - alpha) * previous_derivative;
+;controle_pid.c,116 :: 		derivative = alpha * derivative + (1 - alpha) * previous_derivative;
 	MOVF        controle_pid_alpha+0, 0 
 	MOVWF       R4 
 	MOVF        controle_pid_alpha+1, 0 
@@ -446,7 +511,7 @@ L_controle_pid_calculate_PID6:
 	MOVWF       controle_pid_previous_error+2 
 	MOVF        controle_pid_calculate_PID_error_L0+3, 0 
 	MOVWF       controle_pid_previous_error+3 
-;controle_pid.c,113 :: 		previous_derivative = derivative;
+;controle_pid.c,118 :: 		previous_derivative = derivative;
 	MOVF        FLOC_controle_pid_calculate_PID+4, 0 
 	MOVWF       controle_pid_previous_derivative+0 
 	MOVF        FLOC_controle_pid_calculate_PID+5, 0 
@@ -455,7 +520,7 @@ L_controle_pid_calculate_PID6:
 	MOVWF       controle_pid_previous_derivative+2 
 	MOVF        FLOC_controle_pid_calculate_PID+7, 0 
 	MOVWF       controle_pid_previous_derivative+3 
-;controle_pid.c,115 :: 		return (Kp * error) + (Ki * integral) + (Kd * derivative);
+;controle_pid.c,120 :: 		return (Kp * error) + (Ki * integral) + (Kd * derivative);
 	MOVF        controle_pid_Kp+0, 0 
 	MOVWF       R0 
 	MOVF        controle_pid_Kp+1, 0 
@@ -541,7 +606,7 @@ L_controle_pid_calculate_PID6:
 	MOVF        FLOC_controle_pid_calculate_PID+3, 0 
 	MOVWF       R7 
 	CALL        _Add_32x32_FP+0, 0
-;controle_pid.c,116 :: 		}
+;controle_pid.c,121 :: 		}
 L_end_calculate_PID:
 	RETURN      0
 ; end of controle_pid_calculate_PID

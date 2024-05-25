@@ -23,7 +23,7 @@ void ADC_read_all();
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 39 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/../../system/../framework/usb/usb.h"
+#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/../../system/../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/../../system/../framework/interrupt/interrupt.h"
@@ -115,37 +115,80 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/../../system/../tasks/tasks.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/../macros/macros.h"
-#line 9 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/pwm.h"
+#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/pwm/pwm.h"
 void PWM_init(double freq_pwm);
-void PWM_set_duty_cycle(unsigned char duty_porcent);
+void PWM1_set_duty_cycle(unsigned char duty_porcent);
+void PWM2_set_duty_cycle(unsigned char duty_porcent);
 #line 3 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/framework/pwm/pwm.c"
+static void PWM_SetFrequency(unsigned int freq);
+
 void PWM_init(double freq_pwm)
 {
- unsigned char ptr2_value;
 
-
- T2CON = 0b00000111;
-
- ptr2_value = (unsigned char)(( 48000000UL  / (4 * freq_pwm)) - 1);
-
- if (ptr2_value < 1 || ptr2_value > 255)
- return;
-
- PR2 = ptr2_value;
-
-
+  (TRISC &= ~(1 << TRISC1 )) ;
   (TRISC &= ~(1 << TRISC2 )) ;
+
+ PWM_SetFrequency((unsigned int)freq_pwm);
 
 
  CCP1CON = 0b00001100;
+ CCP2CON = 0b00001100;
 
 
  CCPR1L = 0;
+ CCPR2L = 0;
+
+
+ T2CON = 0b0000111;
 }
 
-void PWM_set_duty_cycle(unsigned char duty_porcent)
+void PWM1_set_duty_cycle(unsigned char duty_porcent)
 {
- unsigned char duty = ((unsigned char) duty_porcent * (PR2 + 1)) / 100;
+ unsigned int duty = ((unsigned int)duty_porcent * (PR2 + 1)) / 100;
+
+ if (duty > 255)
+ duty = 255;
+
+ if (duty & 0x1)
+  (CCP1CON |= (1 << DC1B0)) ;
+ else
+  (CCP1CON &= ~(1 << DC1B0)) ;
+
+ if (duty & 0x2)
+  (CCP1CON |= (1 << DC1B1)) ;
+ else
+  (CCP1CON &= ~(1 << DC1B1)) ;
 
  CCPR1L = duty;
+}
+
+void PWM2_set_duty_cycle(unsigned char duty_porcent)
+{
+ unsigned int duty = ((unsigned int)duty_porcent * (PR2 + 1)) / 100;
+
+ if (duty > 255)
+ duty = 255;
+
+ if (duty & 0x1)
+  (CCP2CON |= (1 << DC2B0)) ;
+ else
+  (CCP2CON &= ~(1 << DC2B0)) ;
+
+ if (duty & 0x2)
+  (CCP2CON |= (1 << DC2B1)) ;
+ else
+  (CCP2CON &= ~(1 << DC2B1)) ;
+
+ CCPR2L = duty;
+}
+
+static void PWM_SetFrequency(unsigned int freq)
+{
+ unsigned long pr2_val;
+
+
+ pr2_val = ( 48000000UL  / (4UL * freq)) - 1;
+
+
+ PR2 = pr2_val > 255 ? 255 : pr2_val;
 }

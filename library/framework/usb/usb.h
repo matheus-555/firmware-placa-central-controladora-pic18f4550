@@ -31,10 +31,12 @@ extern unsigned char usb_available;
 #define USB_PORTD (readBuffer[8])
 //------------------------------------------------------------------------------
 // --- Controle PWM
-#define USB_PWM_BYTE_1 readBuffer[10]
-#define USB_PWM_BYTE_2 readBuffer[11]
-#define USB_PWM_GET_DUTY() ((USB_PWM_BYTE_2 << 8) | USB_PWM_BYTE_1)
-#define USB_PWM_On readBuffer[12] & (1 << 0)
+#define USB_PWM1_BYTE_1 readBuffer[10]
+#define USB_PWM1_BYTE_2 readBuffer[11]
+#define USB_PWM1_GET_DUTY() ((USB_PWM1_BYTE_2 << 8) | USB_PWM1_BYTE_1)
+#define USB_PWM2_BYTE_1 readBuffer[17]
+#define USB_PWM2_BYTE_2 readBuffer[18]
+#define USB_PWM2_GET_DUTY() ((USB_PWM2_BYTE_2 << 8) | USB_PWM2_BYTE_1)
 
 void USB_init();
 void USB_index_data();

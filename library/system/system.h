@@ -73,6 +73,8 @@
 
 #define SYSTEM_FOSC_CPU 48000000UL
 
+#define DEBUG 0
+
 #include "../framework/inc.h"
 #include "../tasks/tasks.h"
 

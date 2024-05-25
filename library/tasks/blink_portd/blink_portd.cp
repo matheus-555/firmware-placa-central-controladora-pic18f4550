@@ -23,7 +23,7 @@ void ADC_read_all();
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 39 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/usb/usb.h"
+#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/interrupt/interrupt.h"
@@ -63,9 +63,10 @@ void GPIO_init();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/pwm/pwm.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/pwm/../../system/system.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/pwm/../macros/macros.h"
-#line 9 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/pwm/pwm.h"
+#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/pwm/pwm.h"
 void PWM_init(double freq_pwm);
-void PWM_set_duty_cycle(unsigned char duty_porcent);
+void PWM1_set_duty_cycle(unsigned char duty_porcent);
+void PWM2_set_duty_cycle(unsigned char duty_porcent);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/soft_timer/soft_timer.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/soft_timer/../inc.h"
 #line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../../framework/soft_timer/soft_timer.h"

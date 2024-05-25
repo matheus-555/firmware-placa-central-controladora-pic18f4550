@@ -74,20 +74,25 @@ void CONTROLE_PID_main()
 
         if (control_output > 0)
         {
+            // Seta duty cycle para a valvula de saida
             PID_discharge_valve(0);
+            PWM2_set_duty_cycle(0);
 
             // Seta duty cycle para a valvula de entrada
             PID_fill_valve((unsigned)control_output);
             value_pwm = (control_output / 1023) * 100;
-            PWM_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+            PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
         }
         else
         {
-            PID_discharge_valve((unsigned)-control_output);
-
             // Seta duty cycle para a valvula de entrada
             PID_fill_valve(0);
-            PWM_set_duty_cycle(0);
+            PWM1_set_duty_cycle(0);
+
+            // Seta duty cycle para a valvula de saida
+            PID_discharge_valve((unsigned)-control_output);
+            value_pwm = (-control_output / 1023) * 100;
+            PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
         }
     }
 }

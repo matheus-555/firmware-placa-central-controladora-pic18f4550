@@ -22,7 +22,7 @@ void ADC_read_all();
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 39 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
+#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/interrupt.h"
@@ -101,9 +101,10 @@ void GPIO_init();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/pwm/pwm.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/pwm/../../system/system.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/pwm/../macros/macros.h"
-#line 9 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/pwm/pwm.h"
+#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/pwm/pwm.h"
 void PWM_init(double freq_pwm);
-void PWM_set_duty_cycle(unsigned char duty_porcent);
+void PWM1_set_duty_cycle(unsigned char duty_porcent);
+void PWM2_set_duty_cycle(unsigned char duty_porcent);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/soft_timer/soft_timer.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/soft_timer/../inc.h"
 #line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/soft_timer/soft_timer.h"
@@ -118,7 +119,7 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
  _Bool  SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, unsigned delay_s);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../tasks/tasks.h"
-#line 11 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
+#line 9 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
 TIMER0_t timer0;
 
 void system_init();
@@ -168,9 +169,8 @@ void system_init()
  GPIO_init();
 
 
-
- PWM_init(5E3);
-#line 68 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
+ PWM_init(3E3);
+#line 65 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
  USB_init();
 
 
