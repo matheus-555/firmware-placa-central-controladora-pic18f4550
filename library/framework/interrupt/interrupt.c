@@ -18,7 +18,11 @@ void interrupt()
     // Interrupcao Timer0 (a cada 1 ms)
     if (INTCON & (1 << TMR0IF))
     {
+#if DEBUG == 0
         TASKS_main();
+#else
+
+#endif
 
         // Trata interrupcao do Timer0
         TIMER0_ISR(&timer0);

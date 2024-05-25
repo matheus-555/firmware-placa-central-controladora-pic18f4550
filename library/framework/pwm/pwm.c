@@ -72,5 +72,3 @@ static void PWM_SetFrequency(unsigned int freq)
     // Configura PR2
     PR2 = pr2_val > 255 ? 255 : pr2_val;
 }
-
-

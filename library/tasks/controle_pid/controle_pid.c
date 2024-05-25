@@ -85,6 +85,7 @@ void CONTROLE_PID_main()
         }
         else
         {
+            control_output = -control_output;
             // Seta duty cycle para a valvula de entrada
             PID_fill_valve(0);
             PWM1_set_duty_cycle(0);

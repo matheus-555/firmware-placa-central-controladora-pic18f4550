@@ -177,6 +177,7 @@ void CONTROLE_PID_main()
  }
  else
  {
+ control_output = -control_output;
 
   writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
  PWM1_set_duty_cycle(0);

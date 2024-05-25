@@ -137,9 +137,9 @@ void interrupt()
 
  if (INTCON & (1 << TMR0IF))
  {
+
  TASKS_main();
-
-
+#line 28 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/framework/interrupt/interrupt.c"
  TIMER0_ISR(&timer0);
 
 

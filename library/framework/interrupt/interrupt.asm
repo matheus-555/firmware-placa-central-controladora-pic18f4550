@@ -18,28 +18,28 @@ _interrupt:
 ;interrupt.c,19 :: 		if (INTCON & (1 << TMR0IF))
 	BTFSS       INTCON+0, 2 
 	GOTO        L_interrupt0
-;interrupt.c,21 :: 		TASKS_main();
+;interrupt.c,22 :: 		TASKS_main();
 	CALL        _TASKS_main+0, 0
-;interrupt.c,24 :: 		TIMER0_ISR(&timer0);
+;interrupt.c,28 :: 		TIMER0_ISR(&timer0);
 	MOVLW       _timer0+0
 	MOVWF       FARG_TIMER0_ISR_timer+0 
 	MOVLW       hi_addr(_timer0+0)
 	MOVWF       FARG_TIMER0_ISR_timer+1 
 	CALL        _TIMER0_ISR+0, 0
-;interrupt.c,27 :: 		INTCON &= ~(1 << TMR0IF);
+;interrupt.c,31 :: 		INTCON &= ~(1 << TMR0IF);
 	BCF         INTCON+0, 2 
-;interrupt.c,28 :: 		}
+;interrupt.c,32 :: 		}
 L_interrupt0:
-;interrupt.c,31 :: 		if (PIR2 & (1 << USBIF))
+;interrupt.c,35 :: 		if (PIR2 & (1 << USBIF))
 	BTFSS       PIR2+0, 5 
 	GOTO        L_interrupt1
-;interrupt.c,34 :: 		USB_ISR();
+;interrupt.c,38 :: 		USB_ISR();
 	CALL        _USB_Interrupt_Proc+0, 0
-;interrupt.c,37 :: 		PIR2 &= ~(1 << USBIF);
+;interrupt.c,41 :: 		PIR2 &= ~(1 << USBIF);
 	BCF         PIR2+0, 5 
-;interrupt.c,38 :: 		}
+;interrupt.c,42 :: 		}
 L_interrupt1:
-;interrupt.c,39 :: 		}
+;interrupt.c,43 :: 		}
 L_end_interrupt:
 L__interrupt4:
 	RETFIE      1
