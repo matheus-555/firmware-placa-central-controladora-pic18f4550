@@ -1,5 +1,10 @@
 #include "contagem_binaria.h"
 
+void void CONTAGEM_BINARIA_init()
+{
+    
+}
+
 void CONTAGEM_BINARIA_main()
 {
     static unsigned count = 0;

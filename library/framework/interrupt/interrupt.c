@@ -1,43 +1,43 @@
 #include "interrupt.h"
 
-// Variavel encontra-se no main()
-extern TIMER0_t timer0;
+
 
 void INTERRUPT_init()
 {
     // Desabilita prioridade de interrupcao
-    RCON &= ~(1 << IPEN);
+    clr_bit(RCON, IPEN);
 
     // Habilita interrupcao geral e interrupcao por perifericos
-    INTCON |= (1 << GIE) | (1 << PEIE);
+    set_bit(INTCON, GIE);
+    set_bit(INTCON, PEIE);
 }
 
 // ROTINA DE TRATAMENTO DE INTERRUPCAO GLOBAL
 void interrupt()
 {
     // Interrupcao Timer0 (a cada 1 ms)
-    if (INTCON & (1 << TMR0IF))
+    if (cmp_bit(INTCON, TMR0IF))
     {
-#if DEBUG == 0
-        TASKS_main();
-#else
+        #if DEBUG == 0
+            TASKS_main();
+        #else
 
-#endif
+        #endif
 
         // Trata interrupcao do Timer0
-        TIMER0_ISR(&timer0);
+        TIMER0_ISR();
 
         // Limpa flag de interrupcao
-        INTCON &= ~(1 << TMR0IF);
+        clr_bit(INTCON, TMR0IF);
     }
 
     // Interrucao USB
-    if (PIR2 & (1 << USBIF))
+    if (cmp_bit(PIR2, USBIF))
     {
         // Trata interrupcao da USB
         USB_ISR();
 
         // Limpa flag de interrupcao
-        PIR2 &= ~(1 << USBIF);
+        clr_bit(PIR2, USBIF);
     }
 }

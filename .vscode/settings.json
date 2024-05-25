@@ -18,6 +18,7 @@
         "tasks.h": "c",
         "livre.h": "c",
         "controle_pid.h": "c",
-        "semaforo.h": "c"
+        "semaforo.h": "c",
+        "contagem_binaria.h": "c"
     }
 }

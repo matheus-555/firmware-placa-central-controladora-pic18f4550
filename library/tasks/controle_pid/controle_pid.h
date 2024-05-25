@@ -3,6 +3,7 @@
 
 #include "../tasks.h"
 
+void CONTROLE_PID_init();
 void CONTROLE_PID_main();
 
 #endif

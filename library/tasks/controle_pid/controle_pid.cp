@@ -19,11 +19,11 @@ void ADC_inicia();
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/../inc.h"
-#line 11 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
+#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
+#line 42 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/interrupt/interrupt.h"
@@ -44,14 +44,13 @@ enum
  TIMER0_LENGTH
 };
 
-typedef struct
-{
+extern struct {
   _Bool  is_finalizado[TIMER0_LENGTH];
-} TIMER0_t;
+}timer0;
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado);
+void TIMER0_init(double tempo_desejado);
 void TIMER0_start( _Bool  val);
-void TIMER0_ISR(Timer0_t *timer);
+void TIMER0_ISR();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/interrupt/../../tasks/tasks.h"
 #line 8 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/interrupt/interrupt.h"
 void INTERRUPT_init();
@@ -82,24 +81,29 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../livre/livre.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../livre/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../livre/livre.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../livre/livre.h"
+void LIVRE_init();
 void LIVRE_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../blink_portd/blink_portd.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../blink_portd/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../blink_portd/blink_portd.h"
+void BLINK_PORTD_init();
 void BLINK_PORTD_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../contagem_binaria/contagem_binaria.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../contagem_binaria/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../contagem_binaria/contagem_binaria.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../contagem_binaria/contagem_binaria.h"
+void void CONTAGEM_BINARIA_init();
 void CONTAGEM_BINARIA_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../controle_pid/controle_pid.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../painel_comando/painel_comando.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../painel_comando/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../painel_comando/painel_comando.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../painel_comando/painel_comando.h"
+void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../semaforo/semaforo.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../semaforo/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../semaforo/semaforo.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../semaforo/semaforo.h"
+void SEMAFORO_init();
 void SEMAFORO_main();
 #line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../tasks.h"
 typedef enum TASKS_id
@@ -115,19 +119,22 @@ typedef enum TASKS_id
 
 typedef void (*TASK_function_t)(void);
 
-void TASKS_add(TASK_function_t func, unsigned id_task);
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
 void TASKS_main();
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/controle_pid.h"
+void CONTROLE_PID_init();
 void CONTROLE_PID_main();
-#line 31 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/controle_pid/controle_pid.c"
+#line 32 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/controle_pid/controle_pid.c"
 static enum {
- T_10MS = 0,
- T_1S,
+ T_PID = 0,
+ T_TGL_STOP,
  T_LENGTH
 };
 
 
 static float calculate_PID(float setpoint, float nivel_tanque);
+static void start();
+static void stop();
 
 
 static SOFT_TIMER_t timer[T_LENGTH];
@@ -153,11 +160,29 @@ static float alpha = 0.1;
 static float control_output = 0;
 static unsigned value_pwm = 0;
 
+static  _Bool  isStart;
+
+void CONTROLE_PID_init()
+{
+ isStart =  0 ;
+ stop();
+}
+
 void CONTROLE_PID_main()
 {
   (writeBuffer[6])  = TASK_CONTROLE_PID;
 
- if (SOFT_TIMER_delay_ms(&timer[T_10MS], 10))
+ if (! (PORTB & (1 << 2)) )
+ isStart =  0 ;
+ else if (! (PORTB & (1 << 0)) )
+ {
+ isStart =  1 ;
+ start();
+ }
+
+ if (isStart)
+ {
+ if (SOFT_TIMER_delay_ms(&timer[T_PID], 10))
  {
  tank_level =  (readBuffer[13] | (readBuffer[14] << 8)) ;
  setpoint =  ADC_variable.an[1] ;
@@ -188,6 +213,32 @@ void CONTROLE_PID_main()
  PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
  }
  }
+ }
+ else
+ stop();
+}
+
+static void stop()
+{
+
+  writeBuffer[20] = 0; writeBuffer[21] = (0 >> 8) ;
+ PWM2_set_duty_cycle(0);
+
+  writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
+ PWM1_set_duty_cycle(0);
+
+
+  ( (LATD &= ~(1 << 0)) ) ;
+
+
+ if (SOFT_TIMER_delay_ms(&timer[T_TGL_STOP], 500))
+  ( (LATD ^= (1 << 2)) ) ;
+}
+
+static void start()
+{
+  ( (LATD &= ~(1 << 2)) ) ;
+  ( (LATD |= (1 << 0)) ) ;
 }
 
 static float calculate_PID(float setpoint, float nivel_tanque)

@@ -1,5 +1,10 @@
 #include "blink_portd.h"
 
+void BLINK_PORTD_init()
+{
+    
+}
+
 void BLINK_PORTD_main()
 {
     static unsigned count = 0;

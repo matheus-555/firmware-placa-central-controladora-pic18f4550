@@ -1,23 +1,31 @@
 
+_SEMAFORO_init:
+
+;semaforo.c,20 :: 		void SEMAFORO_init()
+;semaforo.c,23 :: 		}
+L_end_SEMAFORO_init:
+	RETURN      0
+; end of _SEMAFORO_init
+
 _SEMAFORO_main:
 
-;semaforo.c,20 :: 		void SEMAFORO_main()
-;semaforo.c,22 :: 		MODO_FUNCIONAMENTO_T = TASK_SEMAFORO;
+;semaforo.c,25 :: 		void SEMAFORO_main()
+;semaforo.c,27 :: 		MODO_FUNCIONAMENTO_T = TASK_SEMAFORO;
 	MOVLW       3
 	MOVWF       _writeBuffer+6 
-;semaforo.c,24 :: 		switch (estado)
+;semaforo.c,29 :: 		switch (estado)
 	GOTO        L_SEMAFORO_main0
-;semaforo.c,31 :: 		case 0:
+;semaforo.c,36 :: 		case 0:
 L_SEMAFORO_main2:
-;semaforo.c,32 :: 		set_bit(LATD, 0); // verde
+;semaforo.c,37 :: 		set_bit(LATD, 0); // verde
 	BSF         LATD+0, 0 
-;semaforo.c,33 :: 		clr_bit(LATD, 1); // amarelo
+;semaforo.c,38 :: 		clr_bit(LATD, 1); // amarelo
 	BCF         LATD+0, 1 
-;semaforo.c,34 :: 		clr_bit(LATD, 2); // vermelho
+;semaforo.c,39 :: 		clr_bit(LATD, 2); // vermelho
 	BCF         LATD+0, 2 
-;semaforo.c,36 :: 		SEMAFORO_Fase1();
+;semaforo.c,41 :: 		SEMAFORO_Fase1();
 	CALL        semaforo_SEMAFORO_fase1+0, 0
-;semaforo.c,38 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_VERDE_ON))
+;semaforo.c,43 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_VERDE_ON))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -30,23 +38,23 @@ L_SEMAFORO_main2:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main3
-;semaforo.c,39 :: 		estado = 1;
+;semaforo.c,44 :: 		estado = 1;
 	MOVLW       1
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main3:
-;semaforo.c,41 :: 		break;
+;semaforo.c,46 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,48 :: 		case 1:
+;semaforo.c,53 :: 		case 1:
 L_SEMAFORO_main4:
-;semaforo.c,50 :: 		clr_bit(LATD, 0); // verde
+;semaforo.c,55 :: 		clr_bit(LATD, 0); // verde
 	BCF         LATD+0, 0 
-;semaforo.c,51 :: 		set_bit(LATD, 1); // amarelo
+;semaforo.c,56 :: 		set_bit(LATD, 1); // amarelo
 	BSF         LATD+0, 1 
-;semaforo.c,52 :: 		clr_bit(LATD, 2); // vermelho
+;semaforo.c,57 :: 		clr_bit(LATD, 2); // vermelho
 	BCF         LATD+0, 2 
-;semaforo.c,54 :: 		SEMAFORO_fase1();
+;semaforo.c,59 :: 		SEMAFORO_fase1();
 	CALL        semaforo_SEMAFORO_fase1+0, 0
-;semaforo.c,56 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_AMARELO_ON))
+;semaforo.c,61 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_AMARELO_ON))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -59,17 +67,17 @@ L_SEMAFORO_main4:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main5
-;semaforo.c,57 :: 		estado = 2;
+;semaforo.c,62 :: 		estado = 2;
 	MOVLW       2
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main5:
-;semaforo.c,59 :: 		break;
+;semaforo.c,64 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,66 :: 		case 2:
+;semaforo.c,71 :: 		case 2:
 L_SEMAFORO_main6:
-;semaforo.c,67 :: 		SEMAFORO_todos_vermelho();
+;semaforo.c,72 :: 		SEMAFORO_todos_vermelho();
 	CALL        semaforo_SEMAFORO_todos_vermelho+0, 0
-;semaforo.c,69 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
+;semaforo.c,74 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -82,23 +90,23 @@ L_SEMAFORO_main6:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main7
-;semaforo.c,70 :: 		estado = 3;
+;semaforo.c,75 :: 		estado = 3;
 	MOVLW       3
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main7:
-;semaforo.c,72 :: 		break;
+;semaforo.c,77 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,79 :: 		case 3:
+;semaforo.c,84 :: 		case 3:
 L_SEMAFORO_main8:
-;semaforo.c,81 :: 		set_bit(LATD, 5); // verde
+;semaforo.c,86 :: 		set_bit(LATD, 5); // verde
 	BSF         LATD+0, 5 
-;semaforo.c,82 :: 		clr_bit(LATD, 6); // amarelo
+;semaforo.c,87 :: 		clr_bit(LATD, 6); // amarelo
 	BCF         LATD+0, 6 
-;semaforo.c,83 :: 		clr_bit(LATD, 7); // vermelho
+;semaforo.c,88 :: 		clr_bit(LATD, 7); // vermelho
 	BCF         LATD+0, 7 
-;semaforo.c,85 :: 		SEMAFORO_fase2();
+;semaforo.c,90 :: 		SEMAFORO_fase2();
 	CALL        semaforo_SEMAFORO_fase2+0, 0
-;semaforo.c,87 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_VERDE_ON))
+;semaforo.c,92 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_VERDE_ON))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -111,23 +119,23 @@ L_SEMAFORO_main8:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main9
-;semaforo.c,88 :: 		estado = 4;
+;semaforo.c,93 :: 		estado = 4;
 	MOVLW       4
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main9:
-;semaforo.c,90 :: 		break;
+;semaforo.c,95 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,98 :: 		case 4:
+;semaforo.c,103 :: 		case 4:
 L_SEMAFORO_main10:
-;semaforo.c,100 :: 		clr_bit(LATD, 5); // verde
+;semaforo.c,105 :: 		clr_bit(LATD, 5); // verde
 	BCF         LATD+0, 5 
-;semaforo.c,101 :: 		set_bit(LATD, 6); // amarelo
+;semaforo.c,106 :: 		set_bit(LATD, 6); // amarelo
 	BSF         LATD+0, 6 
-;semaforo.c,102 :: 		clr_bit(LATD, 7); // vermelho
+;semaforo.c,107 :: 		clr_bit(LATD, 7); // vermelho
 	BCF         LATD+0, 7 
-;semaforo.c,104 :: 		SEMAFORO_fase2();
+;semaforo.c,109 :: 		SEMAFORO_fase2();
 	CALL        semaforo_SEMAFORO_fase2+0, 0
-;semaforo.c,106 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_AMARELO_ON))
+;semaforo.c,111 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_AUTOMOVEL_AMARELO_ON))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -140,17 +148,17 @@ L_SEMAFORO_main10:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main11
-;semaforo.c,107 :: 		estado = 5;
+;semaforo.c,112 :: 		estado = 5;
 	MOVLW       5
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main11:
-;semaforo.c,109 :: 		break;
+;semaforo.c,114 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,116 :: 		case 5:
+;semaforo.c,121 :: 		case 5:
 L_SEMAFORO_main12:
-;semaforo.c,117 :: 		SEMAFORO_todos_vermelho();
+;semaforo.c,122 :: 		SEMAFORO_todos_vermelho();
 	CALL        semaforo_SEMAFORO_todos_vermelho+0, 0
-;semaforo.c,119 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
+;semaforo.c,124 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -163,21 +171,21 @@ L_SEMAFORO_main12:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main13
-;semaforo.c,120 :: 		estado = 6;
+;semaforo.c,125 :: 		estado = 6;
 	MOVLW       6
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main13:
-;semaforo.c,122 :: 		break;
+;semaforo.c,127 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,129 :: 		case 6:
+;semaforo.c,134 :: 		case 6:
 L_SEMAFORO_main14:
-;semaforo.c,131 :: 		set_bit(LATD, 3); // verde
+;semaforo.c,136 :: 		set_bit(LATD, 3); // verde
 	BSF         LATD+0, 3 
-;semaforo.c,132 :: 		clr_bit(LATD, 4); // vermelho
+;semaforo.c,137 :: 		clr_bit(LATD, 4); // vermelho
 	BCF         LATD+0, 4 
-;semaforo.c,134 :: 		SEMAFORO_fase3();
+;semaforo.c,139 :: 		SEMAFORO_fase3();
 	CALL        semaforo_SEMAFORO_fase3+0, 0
-;semaforo.c,136 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_PEDESTRE_VERDE_ON))
+;semaforo.c,141 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_PEDESTRE_VERDE_ON))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -190,17 +198,17 @@ L_SEMAFORO_main14:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main15
-;semaforo.c,137 :: 		estado = 7;
+;semaforo.c,142 :: 		estado = 7;
 	MOVLW       7
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main15:
-;semaforo.c,139 :: 		break;
+;semaforo.c,144 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,146 :: 		case 7:
+;semaforo.c,151 :: 		case 7:
 L_SEMAFORO_main16:
-;semaforo.c,148 :: 		clr_bit(LATD, 3); // verde
+;semaforo.c,153 :: 		clr_bit(LATD, 3); // verde
 	BCF         LATD+0, 3 
-;semaforo.c,150 :: 		if (SOFT_TIMER_delay_ms(&timer_ms, SEMAFORO_TEMPO_PEDESTRE_BLINK_MS))
+;semaforo.c,155 :: 		if (SOFT_TIMER_delay_ms(&timer_ms, SEMAFORO_TEMPO_PEDESTRE_BLINK_MS))
 	MOVLW       semaforo_timer_ms+0
 	MOVWF       FARG_SOFT_TIMER_delay_ms_timer+0 
 	MOVLW       hi_addr(semaforo_timer_ms+0)
@@ -213,12 +221,12 @@ L_SEMAFORO_main16:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main17
-;semaforo.c,151 :: 		tgl_bit(LATD, 4); // vermelho
+;semaforo.c,156 :: 		tgl_bit(LATD, 4); // vermelho
 	BTG         LATD+0, 4 
 L_SEMAFORO_main17:
-;semaforo.c,153 :: 		SEMAFORO_fase3();
+;semaforo.c,158 :: 		SEMAFORO_fase3();
 	CALL        semaforo_SEMAFORO_fase3+0, 0
-;semaforo.c,155 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_PEDESTRE_ALERTA))
+;semaforo.c,160 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_PEDESTRE_ALERTA))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -231,17 +239,17 @@ L_SEMAFORO_main17:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main18
-;semaforo.c,156 :: 		estado = 8;
+;semaforo.c,161 :: 		estado = 8;
 	MOVLW       8
 	MOVWF       semaforo_estado+0 
 L_SEMAFORO_main18:
-;semaforo.c,158 :: 		break;
+;semaforo.c,163 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,165 :: 		case 8:
+;semaforo.c,170 :: 		case 8:
 L_SEMAFORO_main19:
-;semaforo.c,166 :: 		SEMAFORO_todos_vermelho();
+;semaforo.c,171 :: 		SEMAFORO_todos_vermelho();
 	CALL        semaforo_SEMAFORO_todos_vermelho+0, 0
-;semaforo.c,168 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
+;semaforo.c,173 :: 		if (SOFT_TIMER_delay_s(&timer_s, SEMAFORO_TEMPO_TODOS_VERMELHO))
 	MOVLW       semaforo_timer_s+0
 	MOVWF       FARG_SOFT_TIMER_delay_s_timer+0 
 	MOVLW       hi_addr(semaforo_timer_s+0)
@@ -254,16 +262,16 @@ L_SEMAFORO_main19:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_SEMAFORO_main20
-;semaforo.c,169 :: 		estado = 0;
+;semaforo.c,174 :: 		estado = 0;
 	CLRF        semaforo_estado+0 
 L_SEMAFORO_main20:
-;semaforo.c,171 :: 		break;
+;semaforo.c,176 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,173 :: 		default:
+;semaforo.c,178 :: 		default:
 L_SEMAFORO_main21:
-;semaforo.c,174 :: 		break;
+;semaforo.c,179 :: 		break;
 	GOTO        L_SEMAFORO_main1
-;semaforo.c,175 :: 		}
+;semaforo.c,180 :: 		}
 L_SEMAFORO_main0:
 	MOVF        semaforo_estado+0, 0 
 	XORLW       0
@@ -303,39 +311,39 @@ L_SEMAFORO_main0:
 	GOTO        L_SEMAFORO_main19
 	GOTO        L_SEMAFORO_main21
 L_SEMAFORO_main1:
-;semaforo.c,176 :: 		}
+;semaforo.c,181 :: 		}
 L_end_SEMAFORO_main:
 	RETURN      0
 ; end of _SEMAFORO_main
 
 semaforo_SEMAFORO_todos_vermelho:
 
-;semaforo.c,178 :: 		static void SEMAFORO_todos_vermelho()
-;semaforo.c,181 :: 		clr_bit(LATD, 0); // verde
+;semaforo.c,183 :: 		static void SEMAFORO_todos_vermelho()
+;semaforo.c,186 :: 		clr_bit(LATD, 0); // verde
 	BCF         LATD+0, 0 
-;semaforo.c,182 :: 		clr_bit(LATD, 1); // amarelo
+;semaforo.c,187 :: 		clr_bit(LATD, 1); // amarelo
 	BCF         LATD+0, 1 
-;semaforo.c,183 :: 		set_bit(LATD, 2); // vermelho
+;semaforo.c,188 :: 		set_bit(LATD, 2); // vermelho
 	BSF         LATD+0, 2 
-;semaforo.c,186 :: 		clr_bit(LATD, 5); // verde
+;semaforo.c,191 :: 		clr_bit(LATD, 5); // verde
 	BCF         LATD+0, 5 
-;semaforo.c,187 :: 		clr_bit(LATD, 6); // amarelo
+;semaforo.c,192 :: 		clr_bit(LATD, 6); // amarelo
 	BCF         LATD+0, 6 
-;semaforo.c,188 :: 		set_bit(LATD, 7); // vermelho
+;semaforo.c,193 :: 		set_bit(LATD, 7); // vermelho
 	BSF         LATD+0, 7 
-;semaforo.c,191 :: 		clr_bit(LATD, 3); // verde
+;semaforo.c,196 :: 		clr_bit(LATD, 3); // verde
 	BCF         LATD+0, 3 
-;semaforo.c,192 :: 		set_bit(LATD, 4); // vermelho
+;semaforo.c,197 :: 		set_bit(LATD, 4); // vermelho
 	BSF         LATD+0, 4 
-;semaforo.c,193 :: 		}
+;semaforo.c,198 :: 		}
 L_end_SEMAFORO_todos_vermelho:
 	RETURN      0
 ; end of semaforo_SEMAFORO_todos_vermelho
 
 semaforo_SEMAFORO_fase1:
 
-;semaforo.c,195 :: 		static void SEMAFORO_fase1()
-;semaforo.c,209 :: 		LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 3));
+;semaforo.c,200 :: 		static void SEMAFORO_fase1()
+;semaforo.c,214 :: 		LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 3));
 	MOVLW       191
 	ANDWF       PORTD+0, 0 
 	MOVWF       R0 
@@ -343,22 +351,22 @@ semaforo_SEMAFORO_fase1:
 	MOVLW       247
 	ANDWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,210 :: 		LATD = (PORTD | (1 << 7) | (1 << 4));
+;semaforo.c,215 :: 		LATD = (PORTD | (1 << 7) | (1 << 4));
 	MOVLW       128
 	IORWF       PORTD+0, 0 
 	MOVWF       R0 
 	MOVLW       16
 	IORWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,211 :: 		}
+;semaforo.c,216 :: 		}
 L_end_SEMAFORO_fase1:
 	RETURN      0
 ; end of semaforo_SEMAFORO_fase1
 
 semaforo_SEMAFORO_fase2:
 
-;semaforo.c,213 :: 		static void SEMAFORO_fase2()
-;semaforo.c,227 :: 		LATD = (PORTD & ~(1 << 0) & ~(1 << 1) & ~(1 << 3));
+;semaforo.c,218 :: 		static void SEMAFORO_fase2()
+;semaforo.c,232 :: 		LATD = (PORTD & ~(1 << 0) & ~(1 << 1) & ~(1 << 3));
 	MOVLW       254
 	ANDWF       PORTD+0, 0 
 	MOVWF       R0 
@@ -366,22 +374,22 @@ semaforo_SEMAFORO_fase2:
 	MOVLW       247
 	ANDWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,228 :: 		LATD = (PORTD | (1 << 2) | (1 << 4));
+;semaforo.c,233 :: 		LATD = (PORTD | (1 << 2) | (1 << 4));
 	MOVLW       4
 	IORWF       PORTD+0, 0 
 	MOVWF       R0 
 	MOVLW       16
 	IORWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,229 :: 		}
+;semaforo.c,234 :: 		}
 L_end_SEMAFORO_fase2:
 	RETURN      0
 ; end of semaforo_SEMAFORO_fase2
 
 semaforo_SEMAFORO_fase3:
 
-;semaforo.c,231 :: 		static void SEMAFORO_fase3()
-;semaforo.c,246 :: 		LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 1) & ~(1 << 0));
+;semaforo.c,236 :: 		static void SEMAFORO_fase3()
+;semaforo.c,251 :: 		LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 1) & ~(1 << 0));
 	MOVLW       191
 	ANDWF       PORTD+0, 0 
 	MOVWF       R0 
@@ -390,14 +398,14 @@ semaforo_SEMAFORO_fase3:
 	MOVLW       254
 	ANDWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,247 :: 		LATD = (PORTD | (1 << 7) | (1 << 2));
+;semaforo.c,252 :: 		LATD = (PORTD | (1 << 7) | (1 << 2));
 	MOVLW       128
 	IORWF       PORTD+0, 0 
 	MOVWF       R0 
 	MOVLW       4
 	IORWF       R0, 0 
 	MOVWF       LATD+0 
-;semaforo.c,248 :: 		}
+;semaforo.c,253 :: 		}
 L_end_SEMAFORO_fase3:
 	RETURN      0
 ; end of semaforo_SEMAFORO_fase3

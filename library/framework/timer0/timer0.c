@@ -12,6 +12,12 @@
 #define TIMER0_IS_3MS 3
 #define TIMER0_IS_5MS 5
 
+struct
+{
+    bool is_finalizado[TIMER0_LENGTH];
+} timer0;
+
+
 static const unsigned int TIMER0_IS_FINALIZADO[TIMER0_LENGTH] = {
     TIMER0_IS_1MS,
     TIMER0_IS_2MS,
@@ -23,10 +29,10 @@ static unsigned int tmr0_ticks[TIMER0_LENGTH] = {
     0,
 };
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado)
+void TIMER0_init(double tempo_desejado)
 {
     register i;
-    bool *ptr = &timer->is_finalizado[0];
+    bool *ptr = &timer0.is_finalizado[0];
 
     for (i = 0; i < TIMER0_LENGTH; ++i)
         *ptr++ = false;
@@ -61,7 +67,7 @@ void TIMER0_start(bool isStart)
     }
 }
 
-void TIMER0_ISR(Timer0_t *timer)
+void TIMER0_ISR()
 {
     register i;
     unsigned int *ptr;
@@ -72,7 +78,7 @@ void TIMER0_ISR(Timer0_t *timer)
 
         if (*ptr >= TIMER0_IS_FINALIZADO[i])
         {
-            timer->is_finalizado[i] = true;
+            timer0.is_finalizado[i] = true;
             *ptr = 0;
         }
     }

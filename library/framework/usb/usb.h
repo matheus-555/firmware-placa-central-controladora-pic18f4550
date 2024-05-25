@@ -5,7 +5,8 @@
 
 #define USB_ISR() USB_Interrupt_Proc()
 #define USB_READ() HID_Read()
-#define USB_SEND_DATA() HID_Write(&writeBuffer, 64);
+#define USB_SEND_DATA() HID_Write(&writeBuffer, 64)
+#define USB_READ_BUFF() usb_available = USB_READ()
 
 // Variaveis declaradas no usb.c
 extern unsigned char readBuffer[64];

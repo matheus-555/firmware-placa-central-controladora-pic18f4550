@@ -133,6 +133,11 @@
 #define ledSinalVermelho 2
 
 
+void PAINEL_COMANDO_init()
+{
+
+}
+
 void PAINEL_COMANDO_main()
 {
     MODO_FUNCIONAMENTO_T = TASK_PAINEL_COMANDO;

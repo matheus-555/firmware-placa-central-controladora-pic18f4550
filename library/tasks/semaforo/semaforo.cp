@@ -19,11 +19,11 @@ void ADC_inicia();
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/../inc.h"
-#line 11 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/usb.h"
+#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/usb.h"
+#line 42 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/interrupt/interrupt.h"
@@ -44,14 +44,13 @@ enum
  TIMER0_LENGTH
 };
 
-typedef struct
-{
+extern struct {
   _Bool  is_finalizado[TIMER0_LENGTH];
-} TIMER0_t;
+}timer0;
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado);
+void TIMER0_init(double tempo_desejado);
 void TIMER0_start( _Bool  val);
-void TIMER0_ISR(Timer0_t *timer);
+void TIMER0_ISR();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/interrupt/../../tasks/tasks.h"
 #line 8 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../../framework/interrupt/interrupt.h"
 void INTERRUPT_init();
@@ -82,23 +81,28 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../livre/livre.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../livre/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../livre/livre.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../livre/livre.h"
+void LIVRE_init();
 void LIVRE_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../blink_portd/blink_portd.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../blink_portd/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../blink_portd/blink_portd.h"
+void BLINK_PORTD_init();
 void BLINK_PORTD_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../contagem_binaria/contagem_binaria.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../contagem_binaria/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../contagem_binaria/contagem_binaria.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../contagem_binaria/contagem_binaria.h"
+void void CONTAGEM_BINARIA_init();
 void CONTAGEM_BINARIA_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_pid/controle_pid.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_pid/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_pid/controle_pid.h"
+void CONTROLE_PID_init();
 void CONTROLE_PID_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../painel_comando/painel_comando.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../painel_comando/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../painel_comando/painel_comando.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../painel_comando/painel_comando.h"
+void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../semaforo/semaforo.h"
 #line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../tasks.h"
@@ -115,9 +119,10 @@ typedef enum TASKS_id
 
 typedef void (*TASK_function_t)(void);
 
-void TASKS_add(TASK_function_t func, unsigned id_task);
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
 void TASKS_main();
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/semaforo.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/semaforo.h"
+void SEMAFORO_init();
 void SEMAFORO_main();
 #line 11 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
 static void SEMAFORO_todos_vermelho();
@@ -128,6 +133,11 @@ static void SEMAFORO_fase3();
 static SOFT_TIMER_t timer_s;
 static SOFT_TIMER_t timer_ms;
 static unsigned char estado = 0;
+
+void SEMAFORO_init()
+{
+
+}
 
 void SEMAFORO_main()
 {
@@ -306,21 +316,21 @@ static void SEMAFORO_todos_vermelho()
 
 static void SEMAFORO_fase1()
 {
-#line 209 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
+#line 214 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
  LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 3));
  LATD = (PORTD | (1 << 7) | (1 << 4));
 }
 
 static void SEMAFORO_fase2()
 {
-#line 227 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
+#line 232 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
  LATD = (PORTD & ~(1 << 0) & ~(1 << 1) & ~(1 << 3));
  LATD = (PORTD | (1 << 2) | (1 << 4));
 }
 
 static void SEMAFORO_fase3()
 {
-#line 246 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
+#line 251 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/semaforo/semaforo.c"
  LATD = (PORTD & ~(1 << 6) & ~(1 << 5) & ~(1 << 1) & ~(1 << 0));
  LATD = (PORTD | (1 << 7) | (1 << 2));
 }

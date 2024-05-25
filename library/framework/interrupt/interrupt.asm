@@ -1,12 +1,13 @@
 
 _INTERRUPT_init:
 
-;interrupt.c,6 :: 		void INTERRUPT_init()
-;interrupt.c,9 :: 		RCON &= ~(1 << IPEN);
+;interrupt.c,5 :: 		void INTERRUPT_init()
+;interrupt.c,8 :: 		clr_bit(RCON, IPEN);
 	BCF         RCON+0, 7 
-;interrupt.c,12 :: 		INTCON |= (1 << GIE) | (1 << PEIE);
-	MOVLW       192
-	IORWF       INTCON+0, 1 
+;interrupt.c,11 :: 		set_bit(INTCON, GIE);
+	BSF         INTCON+0, 7 
+;interrupt.c,12 :: 		set_bit(INTCON, PEIE);
+	BSF         INTCON+0, 6 
 ;interrupt.c,13 :: 		}
 L_end_INTERRUPT_init:
 	RETURN      0
@@ -15,27 +16,23 @@ L_end_INTERRUPT_init:
 _interrupt:
 
 ;interrupt.c,16 :: 		void interrupt()
-;interrupt.c,19 :: 		if (INTCON & (1 << TMR0IF))
+;interrupt.c,19 :: 		if (cmp_bit(INTCON, TMR0IF))
 	BTFSS       INTCON+0, 2 
 	GOTO        L_interrupt0
 ;interrupt.c,22 :: 		TASKS_main();
 	CALL        _TASKS_main+0, 0
-;interrupt.c,28 :: 		TIMER0_ISR(&timer0);
-	MOVLW       _timer0+0
-	MOVWF       FARG_TIMER0_ISR_timer+0 
-	MOVLW       hi_addr(_timer0+0)
-	MOVWF       FARG_TIMER0_ISR_timer+1 
+;interrupt.c,28 :: 		TIMER0_ISR();
 	CALL        _TIMER0_ISR+0, 0
-;interrupt.c,31 :: 		INTCON &= ~(1 << TMR0IF);
+;interrupt.c,31 :: 		clr_bit(INTCON, TMR0IF);
 	BCF         INTCON+0, 2 
 ;interrupt.c,32 :: 		}
 L_interrupt0:
-;interrupt.c,35 :: 		if (PIR2 & (1 << USBIF))
+;interrupt.c,35 :: 		if (cmp_bit(PIR2, USBIF))
 	BTFSS       PIR2+0, 5 
 	GOTO        L_interrupt1
 ;interrupt.c,38 :: 		USB_ISR();
 	CALL        _USB_Interrupt_Proc+0, 0
-;interrupt.c,41 :: 		PIR2 &= ~(1 << USBIF);
+;interrupt.c,41 :: 		clr_bit(PIR2, USBIF);
 	BCF         PIR2+0, 5 
 ;interrupt.c,42 :: 		}
 L_interrupt1:

@@ -3,6 +3,8 @@
 
 #include "../tasks.h"
 
+
+void SEMAFORO_init();
 void SEMAFORO_main();
 
 #endif

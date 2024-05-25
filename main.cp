@@ -18,11 +18,11 @@ void ADC_inicia();
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/../inc.h"
-#line 11 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
+#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
+#line 42 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/interrupt.h"
@@ -41,39 +41,44 @@ enum
  TIMER0_LENGTH
 };
 
-typedef struct
-{
+extern struct {
   _Bool  is_finalizado[TIMER0_LENGTH];
-} TIMER0_t;
+}timer0;
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado);
+void TIMER0_init(double tempo_desejado);
 void TIMER0_start( _Bool  val);
-void TIMER0_ISR(Timer0_t *timer);
+void TIMER0_ISR();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/tasks.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/../framework/inc.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/livre/livre.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/livre/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/livre/livre.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/livre/livre.h"
+void LIVRE_init();
 void LIVRE_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/blink_portd/blink_portd.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/blink_portd/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/blink_portd/blink_portd.h"
+void BLINK_PORTD_init();
 void BLINK_PORTD_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/contagem_binaria/contagem_binaria.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/contagem_binaria/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/contagem_binaria/contagem_binaria.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/contagem_binaria/contagem_binaria.h"
+void void CONTAGEM_BINARIA_init();
 void CONTAGEM_BINARIA_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/controle_pid/controle_pid.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/controle_pid/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/controle_pid/controle_pid.h"
+void CONTROLE_PID_init();
 void CONTROLE_PID_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/painel_comando/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
+void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/semaforo/semaforo.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/semaforo/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/semaforo/semaforo.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/semaforo/semaforo.h"
+void SEMAFORO_init();
 void SEMAFORO_main();
 #line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/../../tasks/tasks.h"
 typedef enum TASKS_id
@@ -89,7 +94,7 @@ typedef enum TASKS_id
 
 typedef void (*TASK_function_t)(void);
 
-void TASKS_add(TASK_function_t func, unsigned id_task);
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
 void TASKS_main();
 #line 8 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/interrupt/interrupt.h"
 void INTERRUPT_init();
@@ -120,19 +125,17 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../tasks/tasks.h"
 #line 9 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
-TIMER0_t timer0;
-
 void system_init();
 
 void main()
 {
 
- TASKS_add(&LIVRE_main, TASK_LIVRE);
- TASKS_add(&BLINK_PORTD_main, TASK_BLINK_PORTD);
- TASKS_add(&CONTAGEM_BINARIA_main, TASK_CONTAGEM_BINARIA);
- TASKS_add(&CONTROLE_PID_main, TASK_CONTROLE_PID);
- TASKS_add(&SEMAFORO_main, TASK_SEMAFORO);
- TASKS_add(&PAINEL_COMANDO_main, TASK_PAINEL_COMANDO);
+ TASKS_add(&LIVRE_init, &LIVRE_main, TASK_LIVRE);
+ TASKS_add(&BLINK_PORTD_init, &BLINK_PORTD_main, TASK_BLINK_PORTD);
+ TASKS_add(&CONTAGEM_BINARIA_init, &CONTAGEM_BINARIA_main, TASK_CONTAGEM_BINARIA);
+ TASKS_add(&CONTROLE_PID_init, &CONTROLE_PID_main, TASK_CONTROLE_PID);
+ TASKS_add(&SEMAFORO_init, &SEMAFORO_main, TASK_SEMAFORO);
+ TASKS_add(&PAINEL_COMANDO_init, &PAINEL_COMANDO_main, TASK_PAINEL_COMANDO);
 
 
  system_init();
@@ -145,7 +148,7 @@ void main()
 
  if (timer0.is_finalizado[TIMER0_1MS])
  {
- usb_available =  HID_Read() ;
+  usb_available = HID_Read() ;
  timer0.is_finalizado[TIMER0_1MS] =  0 ;
  }
 
@@ -154,29 +157,32 @@ void main()
  {
  ADC_read_all();
  USB_index_data();
-  HID_Write(&writeBuffer, 64); ;
+  HID_Write(&writeBuffer, 64) ;
  timer0.is_finalizado[TIMER0_3MS] =  0 ;
  }
+
+
  }
 }
 
 void system_init()
 {
 
+
  ADC_init();
 
 
  GPIO_init();
-
-
  PWM_init(3E3);
-#line 65 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
+
+
  USB_init();
 
 
- TIMER0_init(&timer0, 1E-3);
+ TIMER0_init(1E-3);
  TIMER0_start( 1 );
 
 
  INTERRUPT_init();
+#line 72 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
 }

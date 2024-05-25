@@ -3,6 +3,8 @@
 
 #include "../tasks.h"
 
+
+void LIVRE_init();
 void LIVRE_main();
 
 #endif

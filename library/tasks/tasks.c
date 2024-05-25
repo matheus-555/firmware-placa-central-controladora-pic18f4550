@@ -1,27 +1,31 @@
 #include "tasks.h"
 
-static TASK_function_t task_function[TASK_LENGTH];
-
-void TASKS_init()
+static struct
 {
-    task_function[TASK_LIVRE] = LIVRE_main;
-    task_function[TASK_BLINK_PORTD] = BLINK_PORTD_main;
-    task_function[TASK_CONTAGEM_BINARIA] = CONTAGEM_BINARIA_main;
-    task_function[TASK_CONTROLE_PID] = CONTROLE_PID_main;
-    task_function[TASK_SEMAFORO] = SEMAFORO_main;
-    task_function[TASK_PAINEL_COMANDO] = PAINEL_COMANDO_main;
-}
+    TASK_function_t init[TASK_LENGTH];
+    TASK_function_t main[TASK_LENGTH];
+} task_kernel;
 
-void TASKS_add(TASK_function_t func, unsigned id_task)
+
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
 {
-    task_function[id_task] = func;
+    task_kernel.init[id_task] = init;
+    task_kernel.main[id_task] = main;
 }
 
 void TASKS_main()
 {
+    static unsigned char tmp_modo = TASK_LIVRE;
+
     // Habilita flag de comunicacao USB
     Flag_Usb_On;
 
+    if (tmp_modo != MODO_FUNCIONAMENTO_R)
+    {
+        task_kernel.init[MODO_FUNCIONAMENTO_R]();
+        tmp_modo = MODO_FUNCIONAMENTO_R;
+    }
+
     // Executa tarefa selecionada
-    task_function[MODO_FUNCIONAMENTO_R]();
+    task_kernel.main[MODO_FUNCIONAMENTO_R]();
 }

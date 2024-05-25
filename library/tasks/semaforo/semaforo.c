@@ -17,6 +17,11 @@ static SOFT_TIMER_t timer_s;
 static SOFT_TIMER_t timer_ms;
 static unsigned char estado = 0;
 
+void SEMAFORO_init()
+{
+    
+}
+
 void SEMAFORO_main()
 {
     MODO_FUNCIONAMENTO_T = TASK_SEMAFORO;

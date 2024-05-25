@@ -14,13 +14,12 @@ enum
     TIMER0_LENGTH
 };
 
-typedef struct
-{
+extern struct {
     bool is_finalizado[TIMER0_LENGTH];
-} TIMER0_t;
+}timer0;
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado);
+void TIMER0_init(double tempo_desejado);
 void TIMER0_start(bool val);
-void TIMER0_ISR(Timer0_t *timer);
+void TIMER0_ISR();
 
 #endif

@@ -18,11 +18,11 @@ void ADC_inicia();
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/../inc.h"
-#line 11 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
+#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 41 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
+#line 42 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/interrupt/interrupt.h"
@@ -43,14 +43,13 @@ enum
  TIMER0_LENGTH
 };
 
-typedef struct
-{
+extern struct {
   _Bool  is_finalizado[TIMER0_LENGTH];
-} TIMER0_t;
+}timer0;
 
-void TIMER0_init(Timer0_t *timer, double tempo_desejado);
+void TIMER0_init(double tempo_desejado);
 void TIMER0_start( _Bool  val);
-void TIMER0_ISR(Timer0_t *timer);
+void TIMER0_ISR();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/interrupt/../../tasks/tasks.h"
 #line 8 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/interrupt/interrupt.h"
 void INTERRUPT_init();
@@ -81,27 +80,33 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer);
 void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/livre/livre.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/livre/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/livre/livre.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/livre/livre.h"
+void LIVRE_init();
 void LIVRE_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/blink_portd.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/blink_portd/blink_portd.h"
+void BLINK_PORTD_init();
 void BLINK_PORTD_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/contagem_binaria/contagem_binaria.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/contagem_binaria/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/contagem_binaria/contagem_binaria.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/contagem_binaria/contagem_binaria.h"
+void void CONTAGEM_BINARIA_init();
 void CONTAGEM_BINARIA_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/controle_pid.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../tasks.h"
 #line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/controle_pid.h"
+void CONTROLE_PID_init();
 void CONTROLE_PID_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/painel_comando/painel_comando.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/painel_comando/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/painel_comando/painel_comando.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/painel_comando/painel_comando.h"
+void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/semaforo.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../tasks.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/semaforo.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/semaforo.h"
+void SEMAFORO_init();
 void SEMAFORO_main();
 #line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/tasks.h"
 typedef enum TASKS_id
@@ -117,31 +122,35 @@ typedef enum TASKS_id
 
 typedef void (*TASK_function_t)(void);
 
-void TASKS_add(TASK_function_t func, unsigned id_task);
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
 void TASKS_main();
 #line 3 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/tasks/tasks.c"
-static TASK_function_t task_function[TASK_LENGTH];
-
-void TASKS_init()
+static struct
 {
- task_function[TASK_LIVRE] = LIVRE_main;
- task_function[TASK_BLINK_PORTD] = BLINK_PORTD_main;
- task_function[TASK_CONTAGEM_BINARIA] = CONTAGEM_BINARIA_main;
- task_function[TASK_CONTROLE_PID] = CONTROLE_PID_main;
- task_function[TASK_SEMAFORO] = SEMAFORO_main;
- task_function[TASK_PAINEL_COMANDO] = PAINEL_COMANDO_main;
-}
+ TASK_function_t init[TASK_LENGTH];
+ TASK_function_t main[TASK_LENGTH];
+} task_kernel;
 
-void TASKS_add(TASK_function_t func, unsigned id_task)
+
+void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
 {
- task_function[id_task] = func;
+ task_kernel.init[id_task] = init;
+ task_kernel.main[id_task] = main;
 }
 
 void TASKS_main()
 {
+ static unsigned char tmp_modo = TASK_LIVRE;
+
 
   (writeBuffer[5] |= (1 << 0)) ;
 
+ if (tmp_modo !=  (readBuffer[5]) )
+ {
+ task_kernel.init[ (readBuffer[5]) ]();
+ tmp_modo =  (readBuffer[5]) ;
+ }
 
- task_function[ (readBuffer[5]) ]();
+
+ task_kernel.main[ (readBuffer[5]) ]();
 }

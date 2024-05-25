@@ -18,6 +18,7 @@
 #define PID_reset_light_off (clr_bit(LATD, 1))
 #define PID_stop_light_on (set_bit(LATD, 2))
 #define PID_stop_light_off (clr_bit(LATD, 2))
+#define PID_stop_tgl (tgl_bit(LATD, 2))
 
 // -- Saidas Logicas
 #define PID_fill_valve(val) \
@@ -29,13 +30,15 @@
     writeBuffer[21] = (val >> 8)
 
 static enum {
-    T_10MS = 0,
-    T_1S,
+    T_PID = 0,
+    T_TGL_STOP,
     T_LENGTH
 };
 
 // Metodos private
 static float calculate_PID(float setpoint, float nivel_tanque);
+static void start();
+static void stop();
 
 // Atributos private
 static SOFT_TIMER_t timer[T_LENGTH];
@@ -61,41 +64,85 @@ static float alpha = 0.1;
 static float control_output = 0;
 static unsigned value_pwm = 0;
 
+static bool isStart;
+
+void CONTROLE_PID_init()
+{
+    isStart = false;
+    stop();
+}
+
 void CONTROLE_PID_main()
 {
     MODO_FUNCIONAMENTO_T = TASK_CONTROLE_PID;
 
-    if (SOFT_TIMER_delay_ms(&timer[T_10MS], 10))
+    if (!PID_btn_stop)
+        isStart = false;
+    else if (!PID_btn_start)
     {
-        tank_level = PID_level_meter;
-        setpoint = PID_setpoint;
-
-        control_output = calculate_PID(setpoint, tank_level);
-
-        if (control_output > 0)
-        {
-            // Seta duty cycle para a valvula de saida
-            PID_discharge_valve(0);
-            PWM2_set_duty_cycle(0);
-
-            // Seta duty cycle para a valvula de entrada
-            PID_fill_valve((unsigned)control_output);
-            value_pwm = (control_output / 1023) * 100;
-            PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
-        }
-        else
-        {
-            control_output = -control_output;
-            // Seta duty cycle para a valvula de entrada
-            PID_fill_valve(0);
-            PWM1_set_duty_cycle(0);
-
-            // Seta duty cycle para a valvula de saida
-            PID_discharge_valve((unsigned)-control_output);
-            value_pwm = (-control_output / 1023) * 100;
-            PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
-        }
+        isStart = true;
+        start();
     }
+
+    if (isStart)
+    {
+        if (SOFT_TIMER_delay_ms(&timer[T_PID], 10))
+        {
+            tank_level = PID_level_meter;
+            setpoint = PID_setpoint;
+
+            control_output = calculate_PID(setpoint, tank_level);
+
+            if (control_output > 0)
+            {
+                // Seta duty cycle para a valvula de saida
+                PID_discharge_valve(0);
+                PWM2_set_duty_cycle(0);
+
+                // Seta duty cycle para a valvula de entrada
+                PID_fill_valve((unsigned)control_output);
+                value_pwm = (control_output / 1023) * 100;
+                PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+            }
+            else
+            {
+                control_output = -control_output;
+                // Seta duty cycle para a valvula de entrada
+                PID_fill_valve(0);
+                PWM1_set_duty_cycle(0);
+
+                // Seta duty cycle para a valvula de saida
+                PID_discharge_valve((unsigned)-control_output);
+                value_pwm = (-control_output / 1023) * 100;
+                PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
+            }
+        }
+    } // end start
+    else
+        stop();
+}
+
+static void stop()
+{
+    // Desliga valvulas
+    PID_discharge_valve(0);
+    PWM2_set_duty_cycle(0);
+
+    PID_fill_valve(0);
+    PWM1_set_duty_cycle(0);
+
+    // Desliga sinalizacao de start
+    PID_start_light_off;
+
+    // Pisca sinalizacao de stop a cada 
+    if (SOFT_TIMER_delay_ms(&timer[T_TGL_STOP], 500))
+        PID_stop_tgl;
+}
+
+static void start()
+{
+    PID_stop_light_off;
+    PID_start_light_on;
 }
 
 static float calculate_PID(float setpoint, float nivel_tanque)

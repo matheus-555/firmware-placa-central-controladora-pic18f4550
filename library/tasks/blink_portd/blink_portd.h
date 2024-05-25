@@ -3,6 +3,7 @@
 
 #include "../tasks.h"
 
+void BLINK_PORTD_init();
 void BLINK_PORTD_main();
 
 #endif

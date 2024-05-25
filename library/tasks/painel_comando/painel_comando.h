@@ -3,6 +3,8 @@
 
 #include "../tasks.h"
 
+
+void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 
 #endif
