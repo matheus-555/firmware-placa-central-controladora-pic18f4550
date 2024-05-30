@@ -38,10 +38,10 @@ _TASKS_add:
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
-	MOVLW       tasks_task_kernel+24
+	MOVLW       tasks_task_kernel+28
 	ADDWF       R0, 0 
 	MOVWF       FSR1L+0 
-	MOVLW       hi_addr(tasks_task_kernel+24)
+	MOVLW       hi_addr(tasks_task_kernel+28)
 	ADDWFC      R1, 0 
 	MOVWF       FSR1L+1 
 	MOVF        FARG_TASKS_add_main+0, 0 
@@ -109,10 +109,10 @@ L_TASKS_main0:
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
-	MOVLW       tasks_task_kernel+24
+	MOVLW       tasks_task_kernel+28
 	ADDWF       R0, 0 
 	MOVWF       FSR0L+0 
-	MOVLW       hi_addr(tasks_task_kernel+24)
+	MOVLW       hi_addr(tasks_task_kernel+28)
 	ADDWFC      R1, 0 
 	MOVWF       FSR0L+1 
 	MOVF        POSTINC0+0, 0 

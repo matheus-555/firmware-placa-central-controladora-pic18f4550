@@ -132,33 +132,55 @@ _main:
 	MOVLW       0
 	MOVWF       FARG_TASKS_add_id_task+1 
 	CALL        _TASKS_add+0, 0
-;main.c,22 :: 		system_init();
+;main.c,20 :: 		TASKS_add(&CONTROLE_ON_OFF_init, &CONTROLE_ON_OFF_main, TASK_CONTROLE_ON_OFF);
+	MOVLW       _CONTROLE_ON_OFF_init+0
+	MOVWF       FARG_TASKS_add_init+0 
+	MOVLW       hi_addr(_CONTROLE_ON_OFF_init+0)
+	MOVWF       FARG_TASKS_add_init+1 
+	MOVLW       0
+	MOVWF       FARG_TASKS_add_init+2 
+	MOVLW       0
+	MOVWF       FARG_TASKS_add_init+3 
+	MOVLW       _CONTROLE_ON_OFF_main+0
+	MOVWF       FARG_TASKS_add_main+0 
+	MOVLW       hi_addr(_CONTROLE_ON_OFF_main+0)
+	MOVWF       FARG_TASKS_add_main+1 
+	MOVLW       0
+	MOVWF       FARG_TASKS_add_main+2 
+	MOVLW       0
+	MOVWF       FARG_TASKS_add_main+3 
+	MOVLW       6
+	MOVWF       FARG_TASKS_add_id_task+0 
+	MOVLW       0
+	MOVWF       FARG_TASKS_add_id_task+1 
+	CALL        _TASKS_add+0, 0
+;main.c,23 :: 		system_init();
 	CALL        _system_init+0, 0
-;main.c,25 :: 		MODO_FUNCIONAMENTO_R = TASK_LIVRE;
+;main.c,26 :: 		MODO_FUNCIONAMENTO_R = TASK_LIVRE;
 	CLRF        _readBuffer+5 
-;main.c,27 :: 		for (;;)
+;main.c,28 :: 		for (;;)
 L_main0:
-;main.c,30 :: 		if (timer0.is_finalizado[TIMER0_1MS])
+;main.c,31 :: 		if (timer0.is_finalizado[TIMER0_1MS])
 	MOVF        _timer0+0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_main3
-;main.c,32 :: 		USB_READ_BUFF();
+;main.c,33 :: 		USB_READ_BUFF();
 	CALL        _HID_Read+0, 0
 	MOVF        R0, 0 
 	MOVWF       _usb_available+0 
-;main.c,33 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
+;main.c,34 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
 	CLRF        _timer0+0 
-;main.c,34 :: 		}
+;main.c,35 :: 		}
 L_main3:
-;main.c,37 :: 		if (timer0.is_finalizado[TIMER0_3MS])
+;main.c,38 :: 		if (timer0.is_finalizado[TIMER0_3MS])
 	MOVF        _timer0+2, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_main4
-;main.c,39 :: 		ADC_read_all();
+;main.c,40 :: 		ADC_read_all();
 	CALL        _ADC_read_all+0, 0
-;main.c,40 :: 		USB_index_data();
+;main.c,41 :: 		USB_index_data();
 	CALL        _USB_index_data+0, 0
-;main.c,41 :: 		USB_SEND_DATA();
+;main.c,42 :: 		USB_SEND_DATA();
 	MOVLW       _writeBuffer+0
 	MOVWF       FARG_HID_Write_writebuff+0 
 	MOVLW       hi_addr(_writeBuffer+0)
@@ -166,25 +188,25 @@ L_main3:
 	MOVLW       64
 	MOVWF       FARG_HID_Write_len+0 
 	CALL        _HID_Write+0, 0
-;main.c,42 :: 		timer0.is_finalizado[TIMER0_3MS] = false;
+;main.c,43 :: 		timer0.is_finalizado[TIMER0_3MS] = false;
 	CLRF        _timer0+2 
-;main.c,43 :: 		}
+;main.c,44 :: 		}
 L_main4:
-;main.c,46 :: 		}
-	GOTO        L_main0
 ;main.c,47 :: 		}
+	GOTO        L_main0
+;main.c,48 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main
 
 _system_init:
 
-;main.c,49 :: 		void system_init()
-;main.c,53 :: 		ADC_init();
+;main.c,50 :: 		void system_init()
+;main.c,54 :: 		ADC_init();
 	CALL        _ADC_Init+0, 0
-;main.c,56 :: 		GPIO_init();
+;main.c,57 :: 		GPIO_init();
 	CALL        _GPIO_init+0, 0
-;main.c,57 :: 		PWM_init(3E3);
+;main.c,58 :: 		PWM_init(3E3);
 	MOVLW       0
 	MOVWF       FARG_PWM_init_freq_pwm+0 
 	MOVLW       128
@@ -194,9 +216,9 @@ _system_init:
 	MOVLW       138
 	MOVWF       FARG_PWM_init_freq_pwm+3 
 	CALL        _PWM_init+0, 0
-;main.c,60 :: 		USB_init();
+;main.c,61 :: 		USB_init();
 	CALL        _USB_init+0, 0
-;main.c,63 :: 		TIMER0_init(1E-3);
+;main.c,64 :: 		TIMER0_init(1E-3);
 	MOVLW       111
 	MOVWF       FARG_TIMER0_init_tempo_desejado+0 
 	MOVLW       18
@@ -206,13 +228,13 @@ _system_init:
 	MOVLW       117
 	MOVWF       FARG_TIMER0_init_tempo_desejado+3 
 	CALL        _TIMER0_init+0, 0
-;main.c,64 :: 		TIMER0_start(true);
+;main.c,65 :: 		TIMER0_start(true);
 	MOVLW       1
 	MOVWF       FARG_TIMER0_start_val+0 
 	CALL        _TIMER0_start+0, 0
-;main.c,67 :: 		INTERRUPT_init();
+;main.c,68 :: 		INTERRUPT_init();
 	CALL        _INTERRUPT_init+0, 0
-;main.c,72 :: 		}
+;main.c,73 :: 		}
 L_end_system_init:
 	RETURN      0
 ; end of _system_init

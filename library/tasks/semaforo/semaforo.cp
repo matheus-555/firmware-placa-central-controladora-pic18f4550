@@ -105,7 +105,12 @@ void CONTROLE_PID_main();
 void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../semaforo/semaforo.h"
-#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../tasks.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_on_off/controle_on_off.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_on_off/../tasks.h"
+#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../controle_on_off/controle_on_off.h"
+void CONTROLE_ON_OFF_init();
+void CONTROLE_ON_OFF_main();
+#line 13 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/semaforo/../tasks.h"
 typedef enum TASKS_id
 {
  TASK_LIVRE = 0,
@@ -114,6 +119,7 @@ typedef enum TASKS_id
  TASK_SEMAFORO,
  TASK_CONTAGEM_BINARIA,
  TASK_CONTROLE_PID,
+ TASK_CONTROLE_ON_OFF,
  TASK_LENGTH
 };
 

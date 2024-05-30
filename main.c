@@ -17,6 +17,7 @@ void main()
      TASKS_add(&CONTROLE_PID_init, &CONTROLE_PID_main, TASK_CONTROLE_PID);
      TASKS_add(&SEMAFORO_init, &SEMAFORO_main, TASK_SEMAFORO);
      TASKS_add(&PAINEL_COMANDO_init, &PAINEL_COMANDO_main, TASK_PAINEL_COMANDO);
+     TASKS_add(&CONTROLE_ON_OFF_init, &CONTROLE_ON_OFF_main, TASK_CONTROLE_ON_OFF);
 
      // Inicializa o hardware
      system_init();

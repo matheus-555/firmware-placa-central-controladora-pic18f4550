@@ -8,6 +8,7 @@
 #include "controle_pid/controle_pid.h"
 #include "painel_comando/painel_comando.h"
 #include "semaforo/semaforo.h"
+#include "controle_on_off/controle_on_off.h"
 
 typedef enum TASKS_id
 {
@@ -17,6 +18,7 @@ typedef enum TASKS_id
     TASK_SEMAFORO,
     TASK_CONTAGEM_BINARIA,
     TASK_CONTROLE_PID,
+    TASK_CONTROLE_ON_OFF,
     TASK_LENGTH
 };
 
