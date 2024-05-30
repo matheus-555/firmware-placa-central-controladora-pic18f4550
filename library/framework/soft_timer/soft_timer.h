@@ -1,7 +1,7 @@
 #ifndef __SOFT_TIMER_H__
 #define __SOFT_TIMER_H__
 
-#include "../inc.h"
+#include <stdbool.h>
 
 
 typedef struct

@@ -19,6 +19,9 @@
         "livre.h": "c",
         "controle_pid.h": "c",
         "semaforo.h": "c",
-        "contagem_binaria.h": "c"
+        "contagem_binaria.h": "c",
+        "adc.h": "c",
+        "soft_timer.h": "c",
+        "painel_comando.h": "c"
     }
 }

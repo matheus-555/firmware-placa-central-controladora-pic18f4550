@@ -1,7 +1,8 @@
 #ifndef __USB_H__
 #define __USB_H__
 
-#include "../inc.h"
+#include "../macros/macros.h"
+#include "../adc/adc.h"
 
 #define USB_ISR() USB_Interrupt_Proc()
 #define USB_READ() HID_Read()

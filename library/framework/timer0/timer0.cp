@@ -18,14 +18,40 @@ extern struct {
 void ADC_inicia();
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/usb.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/../inc.h"
-#line 12 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/usb.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/../macros/macros.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/../adc/adc.h"
+#line 13 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 42 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/usb.h"
+#line 43 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/soft_timer/soft_timer.h"
+#line 1 "d:/programfiles/mikroelektronika/mikroc pro for pic/include/stdbool.h"
+#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/soft_timer/soft_timer.h"
+typedef struct
+{
+ unsigned temp_segundos;
+ unsigned temp_mili_segundos;
+} SOFT_TIMER_t;
+
+void SOFT_TIMER_init(SOFT_TIMER_t *timer);
+ _Bool  SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, unsigned delay_ms);
+ _Bool  SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, unsigned delay_s);
+void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/timer0/timer0.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/gpio.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/../macros/macros.h"
+#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/gpio.h"
+void GPIO_init();
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/pwm.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/../../system/system.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/../macros/macros.h"
+#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/pwm.h"
+void PWM_init(double freq_pwm);
+void PWM1_set_duty_cycle(unsigned char duty_porcent);
+void PWM2_set_duty_cycle(unsigned char duty_porcent);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/interrupt.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../timer0/timer0.h"
@@ -52,8 +78,10 @@ void CONTAGEM_BINARIA_main();
 void CONTROLE_PID_init();
 void CONTROLE_PID_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/../../framework/soft_timer/soft_timer.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/../../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/../tasks.h"
-#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
+#line 9 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/painel_comando/painel_comando.h"
 void PAINEL_COMANDO_init();
 void PAINEL_COMANDO_main();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/../../tasks/semaforo/semaforo.h"
@@ -85,31 +113,6 @@ void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
 void TASKS_main();
 #line 8 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/interrupt/interrupt.h"
 void INTERRUPT_init();
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/timer0/timer0.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/gpio.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/../macros/macros.h"
-#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/gpio/gpio.h"
-void GPIO_init();
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/pwm.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/../../system/system.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/../macros/macros.h"
-#line 10 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/pwm/pwm.h"
-void PWM_init(double freq_pwm);
-void PWM1_set_duty_cycle(unsigned char duty_porcent);
-void PWM2_set_duty_cycle(unsigned char duty_porcent);
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/soft_timer/soft_timer.h"
-#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/soft_timer/../inc.h"
-#line 7 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../framework/soft_timer/soft_timer.h"
-typedef struct
-{
- unsigned temp_segundos;
- unsigned temp_mili_segundos;
-} SOFT_TIMER_t;
-
-void SOFT_TIMER_init(SOFT_TIMER_t *timer);
- _Bool  SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, unsigned delay_ms);
- _Bool  SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, unsigned delay_s);
-void SOFT_TIMER_reset(SOFT_TIMER_t *timer);
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../../system/../tasks/tasks.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/timer0/../macros/macros.h"
 #line 1 "d:/programfiles/mikroelektronika/mikroc pro for pic/include/stdbool.h"
