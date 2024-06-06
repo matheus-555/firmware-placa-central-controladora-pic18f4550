@@ -191,7 +191,7 @@ void CONTROLE_ON_OFF_main()
 
  if (isStart)
  {
- if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], 10))
+ if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], 1000))
  {
  if ( ADC_variable.an[1]  !=  (readBuffer[13] | (readBuffer[14] << 8)) )
  {
@@ -203,7 +203,18 @@ void CONTROLE_ON_OFF_main()
 
 
   writeBuffer[18] = 1000; writeBuffer[19] = (1000 >> 8) ;
- PWM1_set_duty_cycle(20);
+ PWM1_set_duty_cycle(100);
+ }
+ else if ( (readBuffer[13] | (readBuffer[14] << 8))  >  ADC_variable.an[1] )
+ {
+
+  writeBuffer[18] = 0; writeBuffer[19] = (0 >> 8) ;
+ PWM1_set_duty_cycle(0);
+
+
+  writeBuffer[20] = 1000; writeBuffer[21] = (1000 >> 8) ;
+ PWM2_set_duty_cycle(100);
+ }
  }
  else
  {
@@ -212,9 +223,8 @@ void CONTROLE_ON_OFF_main()
  PWM1_set_duty_cycle(0);
 
 
-  writeBuffer[20] = 1000; writeBuffer[21] = (1000 >> 8) ;
- PWM2_set_duty_cycle(20);
- }
+  writeBuffer[20] = 0; writeBuffer[21] = (0 >> 8) ;
+ PWM2_set_duty_cycle(0);
  }
  }
  }

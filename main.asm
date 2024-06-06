@@ -168,16 +168,16 @@ L_main0:
 	CALL        _HID_Read+0, 0
 	MOVF        R0, 0 
 	MOVWF       _usb_available+0 
-;main.c,34 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
+;main.c,34 :: 		ADC_read_all();
+	CALL        _ADC_read_all+0, 0
+;main.c,35 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
 	CLRF        _timer0+0 
-;main.c,35 :: 		}
+;main.c,36 :: 		}
 L_main3:
-;main.c,38 :: 		if (timer0.is_finalizado[TIMER0_3MS])
+;main.c,39 :: 		if (timer0.is_finalizado[TIMER0_3MS])
 	MOVF        _timer0+2, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_main4
-;main.c,40 :: 		ADC_read_all();
-	CALL        _ADC_read_all+0, 0
 ;main.c,41 :: 		USB_index_data();
 	CALL        _USB_index_data+0, 0
 ;main.c,42 :: 		USB_SEND_DATA();
@@ -192,21 +192,21 @@ L_main3:
 	CLRF        _timer0+2 
 ;main.c,44 :: 		}
 L_main4:
-;main.c,47 :: 		}
+;main.c,45 :: 		}
 	GOTO        L_main0
-;main.c,48 :: 		}
+;main.c,46 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main
 
 _system_init:
 
-;main.c,50 :: 		void system_init()
-;main.c,54 :: 		ADC_init();
+;main.c,48 :: 		void system_init()
+;main.c,52 :: 		ADC_init();
 	CALL        _ADC_Init+0, 0
-;main.c,57 :: 		GPIO_init();
+;main.c,55 :: 		GPIO_init();
 	CALL        _GPIO_init+0, 0
-;main.c,58 :: 		PWM_init(3E3);
+;main.c,56 :: 		PWM_init(3E3);
 	MOVLW       0
 	MOVWF       FARG_PWM_init_freq_pwm+0 
 	MOVLW       128
@@ -216,9 +216,9 @@ _system_init:
 	MOVLW       138
 	MOVWF       FARG_PWM_init_freq_pwm+3 
 	CALL        _PWM_init+0, 0
-;main.c,61 :: 		USB_init();
+;main.c,59 :: 		USB_init();
 	CALL        _USB_init+0, 0
-;main.c,64 :: 		TIMER0_init(1E-3);
+;main.c,62 :: 		TIMER0_init(1E-3);
 	MOVLW       111
 	MOVWF       FARG_TIMER0_init_tempo_desejado+0 
 	MOVLW       18
@@ -228,13 +228,13 @@ _system_init:
 	MOVLW       117
 	MOVWF       FARG_TIMER0_init_tempo_desejado+3 
 	CALL        _TIMER0_init+0, 0
-;main.c,65 :: 		TIMER0_start(true);
+;main.c,63 :: 		TIMER0_start(true);
 	MOVLW       1
 	MOVWF       FARG_TIMER0_start_val+0 
 	CALL        _TIMER0_start+0, 0
-;main.c,68 :: 		INTERRUPT_init();
+;main.c,66 :: 		INTERRUPT_init();
 	CALL        _INTERRUPT_init+0, 0
-;main.c,73 :: 		}
+;main.c,71 :: 		}
 L_end_system_init:
 	RETURN      0
 ; end of _system_init

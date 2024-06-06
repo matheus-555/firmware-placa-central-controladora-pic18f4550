@@ -149,22 +149,23 @@ static void stop();
 static SOFT_TIMER_t timer[T_LENGTH];
 
 
-static float Kp = 10.0, Ki = 0.5, Kd = 0.2;
+static const float KP = 5.0, KI = 0.5, KD = 0.2;
 
 
-static float setpoint = 50.0;
+static float setpoint;
 
 
-static float tank_level = 0.0;
+static float tank_level;
+
 
 static float integral = 0.0, previous_error = 0.0;
 
 
-static float max_integral = 100.0;
+static const float MAX_VAL_INTEGRAL = 100.0;
 static float previous_derivative = 0.0;
 
 
-static float alpha = 0.1;
+static const float ALPHA = 0.1;
 
 static float control_output = 0;
 static unsigned value_pwm = 0;
@@ -191,7 +192,7 @@ void CONTROLE_PID_main()
 
  if (isStart)
  {
- if (SOFT_TIMER_delay_ms(&timer[T_PID], 10))
+ if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
  {
  tank_level =  (readBuffer[13] | (readBuffer[14] << 8)) ;
  setpoint =  ADC_variable.an[1] ;
@@ -257,18 +258,18 @@ static float calculate_PID(float setpoint, float nivel_tanque)
 
  integral += error;
 
- if (integral > max_integral)
- integral = max_integral;
+ if (integral > MAX_VAL_INTEGRAL)
+ integral = MAX_VAL_INTEGRAL;
 
- if (integral < -max_integral)
- integral = -max_integral;
+ if (integral < -MAX_VAL_INTEGRAL)
+ integral = -MAX_VAL_INTEGRAL;
 
  derivative = (error - previous_error);
 
 
- derivative = alpha * derivative + (1 - alpha) * previous_derivative;
+ derivative = ALPHA * derivative + (1 - ALPHA) * previous_derivative;
  previous_error = error;
  previous_derivative = derivative;
 
- return (Kp * error) + (Ki * integral) + (Kd * derivative);
+ return (KP * error) + (KI * integral) + (KD * derivative);
 }

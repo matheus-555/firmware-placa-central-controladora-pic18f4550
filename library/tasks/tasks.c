@@ -15,7 +15,7 @@ void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
 
 void TASKS_main()
 {
-    static unsigned char tmp_modo = TASK_LIVRE;
+    static unsigned char tmp_modo = MODO_FUNCIONAMENTO_R;
 
     // Habilita flag de comunicacao USB
     Flag_Usb_On;

@@ -62,40 +62,6 @@ _TASKS_main:
 ;tasks.c,16 :: 		void TASKS_main()
 ;tasks.c,21 :: 		Flag_Usb_On;
 	BSF         _writeBuffer+5, 0 
-;tasks.c,23 :: 		if (tmp_modo != MODO_FUNCIONAMENTO_R)
-	MOVF        TASKS_main_tmp_modo_L0+0, 0 
-	XORWF       _readBuffer+5, 0 
-	BTFSC       STATUS+0, 2 
-	GOTO        L_TASKS_main0
-;tasks.c,25 :: 		task_kernel.init[MODO_FUNCIONAMENTO_R]();
-	MOVF        _readBuffer+5, 0 
-	MOVWF       R0 
-	MOVLW       0
-	MOVWF       R1 
-	RLCF        R0, 1 
-	BCF         R0, 0 
-	RLCF        R1, 1 
-	RLCF        R0, 1 
-	BCF         R0, 0 
-	RLCF        R1, 1 
-	MOVLW       tasks_task_kernel+0
-	ADDWF       R0, 0 
-	MOVWF       FSR0L+0 
-	MOVLW       hi_addr(tasks_task_kernel+0)
-	ADDWFC      R1, 0 
-	MOVWF       FSR0L+1 
-	MOVF        POSTINC0+0, 0 
-	MOVWF       R0 
-	MOVF        POSTINC0+0, 0 
-	MOVWF       R1 
-	MOVF        POSTINC0+0, 0 
-	MOVWF       R2 
-	MOVF        POSTINC0+0, 0 
-	MOVWF       R3 
-	CALL        _____DoIFC+0, 0
-;tasks.c,26 :: 		tmp_modo = MODO_FUNCIONAMENTO_R;
-	MOVF        _readBuffer+5, 0 
-	MOVWF       TASKS_main_tmp_modo_L0+0 
 ;tasks.c,27 :: 		}
 L_TASKS_main0:
 ;tasks.c,30 :: 		task_kernel.main[MODO_FUNCIONAMENTO_R]();

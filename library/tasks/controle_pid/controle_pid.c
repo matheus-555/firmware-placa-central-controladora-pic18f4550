@@ -44,22 +44,23 @@ static void stop();
 static SOFT_TIMER_t timer[T_LENGTH];
 
 // --- Parâmetros PID
-static float Kp = 10.0, Ki = 0.5, Kd = 0.2;
+static const float KP = 5.0, KI = 0.5, KD = 0.2;
 
 // Ponto de ajuste do nível do tanque
-static float setpoint = 50.0;
+static float setpoint;
 
 // Nível atual do tanque
-static float tank_level = 0.0;
+static float tank_level;
 
+// INTEGRAL
 static float integral = 0.0, previous_error = 0.0;
 
 // Limite para antiwindup
-static float max_integral = 100.0;
+static const float MAX_VAL_INTEGRAL = 100.0;
 static float previous_derivative = 0.0;
 
 // Fator de filtragem derivativa
-static float alpha = 0.1;
+static const float ALPHA = 0.1;
 
 static float control_output = 0;
 static unsigned value_pwm = 0;
@@ -86,7 +87,7 @@ void CONTROLE_PID_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_PID], 10))
+        if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
         {
             tank_level = PID_level_meter;
             setpoint = PID_setpoint;
@@ -134,7 +135,7 @@ static void stop()
     // Desliga sinalizacao de start
     PID_start_light_off;
 
-    // Pisca sinalizacao de stop a cada 
+    // Pisca sinalizacao de stop a cada
     if (SOFT_TIMER_delay_ms(&timer[T_TGL_STOP], 500))
         PID_stop_tgl;
 }
@@ -152,18 +153,18 @@ static float calculate_PID(float setpoint, float nivel_tanque)
 
     integral += error;
 
-    if (integral > max_integral)
-        integral = max_integral; // Limitar integral para antiwindup
+    if (integral > MAX_VAL_INTEGRAL)
+        integral = MAX_VAL_INTEGRAL; // Limitar integral para antiwindup
 
-    if (integral < -max_integral)
-        integral = -max_integral; // Limitar integral para antiwindup
+    if (integral < -MAX_VAL_INTEGRAL)
+        integral = -MAX_VAL_INTEGRAL; // Limitar integral para antiwindup
 
     derivative = (error - previous_error);
 
     // Filtragem derivativa
-    derivative = alpha * derivative + (1 - alpha) * previous_derivative;
+    derivative = ALPHA * derivative + (1 - ALPHA) * previous_derivative;
     previous_error = error;
     previous_derivative = derivative;
 
-    return (Kp * error) + (Ki * integral) + (Kd * derivative);
+    return (KP * error) + (KI * integral) + (KD * derivative);
 }

@@ -1,5 +1,9 @@
 #include "adc.h"
 
+#define MEDIA 1
+
+#define QTDE_LEITURA ((char)16)
+
 struct
 {
     unsigned an[ADC_QTDE_CH];
@@ -29,8 +33,23 @@ void ADC_inicia()
 
 void ADC_read_all()
 {
-    register char i;
+    register char canal;
 
-    for(i=0; i < ADC_QTDE_CH; ++i)
-        ADC_variable.an[i] = ADC_LER_CANAL(i);
+#if MEDIA == 0
+    for (canal = 0; canal < ADC_QTDE_CH; ++canal)
+        ADC_variable.an[canal] = ADC_LER_CANAL(canal);
+#else
+    register char i;
+    float tmp_val;
+
+    for (canal = 0; canal < ADC_QTDE_CH; ++canal)
+    {
+        tmp_val = 0;
+
+        for (i = 0; i < QTDE_LEITURA; ++i)
+            tmp_val += ADC_LER_CANAL(canal);
+
+        ADC_variable.an[canal] = (tmp_val/QTDE_LEITURA);
+    }
+#endif
 }

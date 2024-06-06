@@ -149,7 +149,7 @@ void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
 
 void TASKS_main()
 {
- static unsigned char tmp_modo = TASK_LIVRE;
+ static unsigned char tmp_modo =  (readBuffer[5]) ;
 
 
   (writeBuffer[5] |= (1 << 0)) ;

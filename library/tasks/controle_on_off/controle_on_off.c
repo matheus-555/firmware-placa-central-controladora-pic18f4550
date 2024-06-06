@@ -86,7 +86,7 @@ void CONTROLE_ON_OFF_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], 10))
+        if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], 1000))
         {
             if (ON_OFF_setpoint != ON_OFF_level_meter)
             {
@@ -98,9 +98,9 @@ void CONTROLE_ON_OFF_main()
 
                     // Seta duty cycle para a valvula de entrada
                     ON_OFF_fill_valve(1000);
-                    PWM1_set_duty_cycle(20);
+                    PWM1_set_duty_cycle(100);
                 }
-                else
+                else if (ON_OFF_level_meter > ON_OFF_setpoint)
                 {
                     // Seta duty cycle para a valvula de entrada
                     ON_OFF_fill_valve(0);
@@ -108,8 +108,18 @@ void CONTROLE_ON_OFF_main()
 
                     // Seta duty cycle para a valvula de saida
                     ON_OFF_discharge_valve(1000);
-                    PWM2_set_duty_cycle(20);
+                    PWM2_set_duty_cycle(100);
                 }
+            }
+            else
+            {
+                // Seta duty cycle para a valvula de entrada
+                ON_OFF_fill_valve(0);
+                PWM1_set_duty_cycle(0);
+
+                // Seta duty cycle para a valvula de saida
+                ON_OFF_discharge_valve(0);
+                PWM2_set_duty_cycle(0);
             }
         }
     } // end start
