@@ -8,13 +8,14 @@
 #define ADC_PIN_AD_CH_2 RA2
 #define ADC_QTDE_CH 3
 
-#define ADC_LER_CANAL(canal) ADC_read(canal)
+//#define ADC_LER_CANAL(canal) ADC_read(canal)
 
 extern struct {
     unsigned an[ADC_QTDE_CH];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 
 

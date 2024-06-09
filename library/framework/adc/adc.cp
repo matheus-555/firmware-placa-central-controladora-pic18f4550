@@ -6,7 +6,8 @@ extern struct {
  unsigned an[ 3 ];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 #line 7 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/framework/adc/adc.c"
 struct
@@ -14,26 +15,81 @@ struct
  unsigned an[ 3 ];
 } ADC_variable;
 
-void ADC_inicia()
+
+
+
+
+
+
+
+
+
+void ADC_init()
 {
  register i;
+
 
   (TRISA |= (1 << RA0 )) ;
   (TRISA |= (1 << RA1 )) ;
   (TRISA |= (1 << RA2 )) ;
 
-
- ADCON1 = 0x0C;
-
  for (i = 0; i <  3 ; ++i)
  ADC_variable.an[i] = 0;
 
 
+ ADCON1 = 0x0C;
 
 
 
+  (ADCON2 |= (1 << ADFM)) ;
 
- ADC_init();
+
+  (ADCON2 |= (1 << ACQT2)) ;
+  (ADCON2 |= (1 << ACQT1)) ;
+  (ADCON2 &= ~(1 << ACQT0)) ;
+
+
+  (ADCON2 &= ~(1 << ADCS2)) ;
+  (ADCON2 &= ~(1 << ADCS1)) ;
+  (ADCON2 |= (1 << ADCS0)) ;
+
+
+  (ADCON0 |= (1 << ADON)) ;
+
+
+}
+
+
+unsigned ADC_read_channel(unsigned char ch)
+{
+
+ ADCON0 |= (ch << 2);
+
+
+ asm {
+
+
+ MOVLW 14
+ MOVWF  0x20 
+
+ DELAY_LOOP:
+ NOP
+ DECFSZ  0x20 , 1
+ GOTO DELAY_LOOP
+
+ }
+
+
+  (ADCON0 |= (1 << GO_DONE)) ;
+
+
+ while ( (ADCON0 & (1 << GO_DONE)) );
+
+
+ ADCON0 &= 0x03;
+
+
+ return ((ADRESH << 8) + ADRESL);
 }
 
 void ADC_read_all()
@@ -52,9 +108,9 @@ void ADC_read_all()
  tmp_val = 0;
 
  for (i = 0; i <  ((char)16) ; ++i)
- tmp_val +=  ADC_read(canal) ;
+ tmp_val += ADC_read_channel(canal);
 
- ADC_variable.an[canal] = (tmp_val/ ((char)16) );
+ ADC_variable.an[canal] = (tmp_val /  ((char)16) );
  }
 
 }

@@ -75,6 +75,10 @@
 
 #define DEBUG 0
 
+#define DEBUG_TEMPO_GASTO(ROTINA) LATC |= (1 << TRISC6); \
+                                  ROTINA; \
+                                  LATC &= ~(1 << TRISC6)
+
 #include "../framework/inc.h"
 #include "../tasks/tasks.h"
 

@@ -14,7 +14,8 @@ extern struct {
  unsigned an[ 3 ];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/system/../framework/usb/../macros/macros.h"
@@ -159,7 +160,6 @@ void main()
  if (timer0.is_finalizado[TIMER0_1MS])
  {
   usb_available = HID_Read() ;
- ADC_read_all();
  timer0.is_finalizado[TIMER0_1MS] =  0 ;
  }
 
@@ -168,6 +168,7 @@ void main()
  {
  USB_index_data();
   HID_Write(&writeBuffer, 64) ;
+ ADC_read_all();
  timer0.is_finalizado[TIMER0_3MS] =  0 ;
  }
  }
@@ -192,5 +193,5 @@ void system_init()
 
 
  INTERRUPT_init();
-#line 71 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
+#line 88 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/main.c"
 }

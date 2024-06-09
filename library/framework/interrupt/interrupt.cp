@@ -9,7 +9,8 @@ extern struct {
  unsigned an[ 3 ];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 #line 13 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/interrupt/../usb/usb.h"
 extern unsigned char readBuffer[64];
@@ -150,9 +151,9 @@ void interrupt()
 
  if ( (INTCON & (1 << TMR0IF)) )
  {
-
  TASKS_main();
-#line 28 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/framework/interrupt/interrupt.c"
+
+
  TIMER0_ISR();
 
 

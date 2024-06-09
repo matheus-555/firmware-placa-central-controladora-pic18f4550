@@ -14,7 +14,8 @@ extern struct {
  unsigned an[ 3 ];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/../framework/usb/../macros/macros.h"

@@ -52,6 +52,7 @@ adc_init
 adc_init_advanced
 adc_read
 adc_read_all
+adc_read_channel
 adc_variable
 adcon0
 adcon1
@@ -143,6 +144,7 @@ blength
 blength
 blength
 blength
+blink_portd_init
 blink_portd_main
 bmaxpacketsize0
 bnumconfigurations
@@ -256,7 +258,9 @@ cmip_bit
 comfrem
 compare_double
 configdescriptor1
+contagem_binaria_init
 contagem_binaria_main
+controle_pid_init
 controle_pid_main
 crc16ee
 crc16ee_bit
@@ -710,6 +714,7 @@ late1
 late1_bit
 late2
 late2_bit
+livre_init
 livre_main
 longint2double
 longjmp
@@ -910,8 +915,9 @@ pssbd0
 pssbd0_bit
 pssbd1
 pssbd1_bit
-pwm_duty_cycle
 pwm_init
+pwm1_set_duty_cycle
+pwm2_set_duty_cycle
 r
 r_bit
 r_not_w
@@ -1253,7 +1259,6 @@ t3sync
 t3sync_bit
 tablat
 tasks_add
-tasks_init
 tasks_main
 tblptr
 tblptrh

@@ -18,11 +18,7 @@ void interrupt()
     // Interrupcao Timer0 (a cada 1 ms)
     if (cmp_bit(INTCON, TMR0IF))
     {
-        #if DEBUG == 0
-            TASKS_main();
-        #else
-
-        #endif
+        TASKS_main();
 
         // Trata interrupcao do Timer0
         TIMER0_ISR();

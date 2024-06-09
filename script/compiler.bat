@@ -18,4 +18,4 @@ SET BIBLIOTECAS_C=%SRC_FRAMEWORK% %SRC_TASKS%
 
 echo %BIBLIOTECAS_H%
 
-%COMPILADOR% -MSF -DBG -p %PIC_MCU% -DL -O11111114 -fo20 -N %ARQUIVO_PROJETO% -SP %ARQUIVOS_DEFINES% -SP %ARQUIVOS_P18% -SP %DIRETORIO_PROJECT% %BIBLIOTECAS_H% -IP %ARQUIVOS_P18% "main.c" %BIBLIOTECAS_C% "USBdsc.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_USB_genHID.mcl" "__Lib_ADC_A_D.mcl" 
+%COMPILADOR% -MSF -DBG -p %PIC_MCU% -DL -O11111114 -fo20 -N %ARQUIVO_PROJETO% -SP %ARQUIVOS_DEFINES% -SP %ARQUIVOS_P18% -SP %DIRETORIO_PROJECT% %BIBLIOTECAS_H% -IP %ARQUIVOS_P18% "main.c" %BIBLIOTECAS_C% "USBdsc.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_USB_genHID.mcl" 

@@ -44,6 +44,9 @@ static void stop();
 static SOFT_TIMER_t timer[T_LENGTH];
 
 // --- Parâmetros PID
+// KP = 5.0
+// KI = 0.5
+// KD = 0.2
 static const float KP = 5.0, KI = 0.5, KD = 0.2;
 
 // Ponto de ajuste do nível do tanque
@@ -87,7 +90,7 @@ void CONTROLE_PID_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
+        if (SOFT_TIMER_delay_ms(&timer[T_PID], 100))
         {
             tank_level = PID_level_meter;
             setpoint = PID_setpoint;

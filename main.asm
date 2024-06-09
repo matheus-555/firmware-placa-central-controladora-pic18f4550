@@ -168,19 +168,17 @@ L_main0:
 	CALL        _HID_Read+0, 0
 	MOVF        R0, 0 
 	MOVWF       _usb_available+0 
-;main.c,34 :: 		ADC_read_all();
-	CALL        _ADC_read_all+0, 0
-;main.c,35 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
+;main.c,34 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
 	CLRF        _timer0+0 
-;main.c,36 :: 		}
+;main.c,35 :: 		}
 L_main3:
-;main.c,39 :: 		if (timer0.is_finalizado[TIMER0_3MS])
+;main.c,38 :: 		if (timer0.is_finalizado[TIMER0_3MS])
 	MOVF        _timer0+2, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_main4
-;main.c,41 :: 		USB_index_data();
+;main.c,40 :: 		USB_index_data();
 	CALL        _USB_index_data+0, 0
-;main.c,42 :: 		USB_SEND_DATA();
+;main.c,41 :: 		USB_SEND_DATA();
 	MOVLW       _writeBuffer+0
 	MOVWF       FARG_HID_Write_writebuff+0 
 	MOVLW       hi_addr(_writeBuffer+0)
@@ -188,6 +186,8 @@ L_main3:
 	MOVLW       64
 	MOVWF       FARG_HID_Write_len+0 
 	CALL        _HID_Write+0, 0
+;main.c,42 :: 		ADC_read_all();
+	CALL        _ADC_read_all+0, 0
 ;main.c,43 :: 		timer0.is_finalizado[TIMER0_3MS] = false;
 	CLRF        _timer0+2 
 ;main.c,44 :: 		}
@@ -203,7 +203,7 @@ _system_init:
 
 ;main.c,48 :: 		void system_init()
 ;main.c,52 :: 		ADC_init();
-	CALL        _ADC_Init+0, 0
+	CALL        _ADC_init+0, 0
 ;main.c,55 :: 		GPIO_init();
 	CALL        _GPIO_init+0, 0
 ;main.c,56 :: 		PWM_init(3E3);
@@ -234,7 +234,7 @@ _system_init:
 	CALL        _TIMER0_start+0, 0
 ;main.c,66 :: 		INTERRUPT_init();
 	CALL        _INTERRUPT_init+0, 0
-;main.c,71 :: 		}
+;main.c,88 :: 		}
 L_end_system_init:
 	RETURN      0
 ; end of _system_init

@@ -1,7 +1,7 @@
 main
 	TASKS_add
 	system_init
-		ADC_Init
+		ADC_init
 		GPIO_init
 		PWM_init
 			double2word
@@ -45,28 +45,6 @@ main
 		Gen_Read
 			USB_Handle_Busy
 			USB_Transfer_Packet
-	ADC_read_all
-		ADC_Read
-			Delay_22us
-		word2double
-			NRM3232
-				RES032
-				SETFUN32
-				FIXSIGN32
-		Add_32x32_FP
-			NRM4032
-				SETFUN32
-				FIXSIGN32
-				SETFOV32
-				RES032
-			SETFOV32
-		Div_32x32_FP
-			SETFDZ32
-			RES032
-			SETFOV32
-			SETFUN32
-		double2word
-			SETIOV3224
 	USB_index_data
 	HID_Write
 		Gen_Write
@@ -99,6 +77,27 @@ main
 				USB_CtrlTrf_In_Handler
 					USB_CtrlTrf_Tx_Service
 					USB_Prepare_Next_Setup_Trf
+	ADC_read_all
+		ADC_read_channel
+		word2double
+			NRM3232
+				RES032
+				SETFUN32
+				FIXSIGN32
+		Add_32x32_FP
+			NRM4032
+				SETFUN32
+				FIXSIGN32
+				SETFOV32
+				RES032
+			SETFOV32
+		Div_32x32_FP
+			SETFDZ32
+			RES032
+			SETFOV32
+			SETFUN32
+		double2word
+			SETIOV3224
 interrupt
 	TASKS_main
 		____DoIFC

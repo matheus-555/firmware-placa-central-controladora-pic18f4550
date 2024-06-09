@@ -31,7 +31,6 @@ void main()
           if (timer0.is_finalizado[TIMER0_1MS])
           {
                USB_READ_BUFF();
-               ADC_read_all();
                timer0.is_finalizado[TIMER0_1MS] = false;
           }
 
@@ -40,6 +39,7 @@ void main()
           {
                USB_index_data();
                USB_SEND_DATA();
+               ADC_read_all();
                timer0.is_finalizado[TIMER0_3MS] = false;
           }
      }
@@ -65,7 +65,24 @@ void system_init()
      // Interrupcoes
      INTERRUPT_init();
 #else
-     TRISC &= ~(1 << TRISC2);
-     LATC &= ~(1 << TRISC2);
+     TRISC &= ~(1 << TRISC6);
+     LATC  &= ~(1 << TRISC6);
+
+     // ADC
+     ADC_init();
+
+     // Gpio
+     GPIO_init();
+     PWM_init(3E3);
+
+     // USB
+     USB_init();
+
+     // Timers
+     TIMER0_init(1E-3);
+     TIMER0_start(true);
+
+     // Interrupcoes
+     INTERRUPT_init();
 #endif
 }

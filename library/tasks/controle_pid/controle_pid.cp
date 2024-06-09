@@ -15,7 +15,8 @@ extern struct {
  unsigned an[ 3 ];
 }ADC_variable;
 
-void ADC_inicia();
+void ADC_init();
+unsigned ADC_read_channel(unsigned char ch);
 void ADC_read_all();
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/usb.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/tasks/controle_pid/../../framework/usb/../macros/macros.h"
@@ -149,6 +150,9 @@ static void stop();
 static SOFT_TIMER_t timer[T_LENGTH];
 
 
+
+
+
 static const float KP = 5.0, KI = 0.5, KD = 0.2;
 
 
@@ -192,7 +196,7 @@ void CONTROLE_PID_main()
 
  if (isStart)
  {
- if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
+ if (SOFT_TIMER_delay_ms(&timer[T_PID], 100))
  {
  tank_level =  (readBuffer[13] | (readBuffer[14] << 8)) ;
  setpoint =  ADC_variable.an[1] ;
