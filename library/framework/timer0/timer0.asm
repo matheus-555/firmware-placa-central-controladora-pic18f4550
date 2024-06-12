@@ -151,7 +151,7 @@ L_TIMER0_ISR5:
 L__TIMER0_ISR13:
 	BTFSC       STATUS+0, 0 
 	GOTO        L_TIMER0_ISR6
-;timer0.c,77 :: 		*ptr += 1;
+;timer0.c,77 :: 		++(*ptr);
 	MOVFF       R9, FSR0L+0
 	MOVFF       R10, FSR0H+0
 	MOVLW       1

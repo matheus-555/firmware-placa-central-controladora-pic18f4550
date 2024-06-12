@@ -74,7 +74,7 @@ void TIMER0_ISR()
 
     for (i = 0, ptr = &tmr0_ticks[0]; i < TIMER0_LENGTH; ++i, ++ptr)
     {
-        *ptr += 1;
+        ++(*ptr);
 
         if (*ptr >= TIMER0_IS_FINALIZADO[i])
         {

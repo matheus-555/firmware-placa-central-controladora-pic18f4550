@@ -31,7 +31,9 @@ void main()
 
           if (timer0.is_finalizado[TIMER0_3MS])
           {
+               DEBUG_LIGA_PIN();
                USB_index_data(); // Constante 3 us para executar
+               DEBUG_DESLIGA_PIN();
                ADC_read_all();  // Maximo de 380 us para executar
                timer0.is_finalizado[TIMER0_3MS] = false;
           }
