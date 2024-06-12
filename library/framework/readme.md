@@ -1,1 +1,0 @@
-Compilador MikroC Pro For Pic 7.6.0
