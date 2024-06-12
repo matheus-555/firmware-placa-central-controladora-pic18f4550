@@ -3,19 +3,65 @@
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../macros/macros.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/adc.h"
 #line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/../macros/macros.h"
-#line 13 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/adc.h"
+#line 1 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/../math/math.h"
+#line 1 "d:/programfiles/mikroelektronika/mikroc pro for pic/include/stdint.h"
+
+
+
+
+typedef signed char int8_t;
+typedef signed int int16_t;
+typedef signed long int int32_t;
+
+
+typedef unsigned char uint8_t;
+typedef unsigned int uint16_t;
+typedef unsigned long int uint32_t;
+
+
+typedef signed char int_least8_t;
+typedef signed int int_least16_t;
+typedef signed long int int_least32_t;
+
+
+typedef unsigned char uint_least8_t;
+typedef unsigned int uint_least16_t;
+typedef unsigned long int uint_least32_t;
+
+
+
+typedef signed char int_fast8_t;
+typedef signed int int_fast16_t;
+typedef signed long int int_fast32_t;
+
+
+typedef unsigned char uint_fast8_t;
+typedef unsigned int uint_fast16_t;
+typedef unsigned long int uint_fast32_t;
+
+
+typedef signed int intptr_t;
+typedef unsigned int uintptr_t;
+
+
+typedef signed long int intmax_t;
+typedef unsigned long int uintmax_t;
+#line 6 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/../math/math.h"
+uint8_t MATH_get_exponte_base_2(uint16_t valor);
+#line 1 "d:/programfiles/mikroelektronika/mikroc pro for pic/include/stdint.h"
+#line 24 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/../adc/adc.h"
 extern struct {
- unsigned an[ 3 ];
+ uint16_t an[ 3 ];
 }ADC_variable;
 
 void ADC_init();
-unsigned ADC_read_channel(unsigned char ch);
+uint16_t ADC_read_channel(uint8_t ch);
 void ADC_read_all();
-#line 13 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/usb.h"
+#line 16 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/usb.h"
 extern unsigned char readBuffer[64];
 extern unsigned char writeBuffer[64];
 extern unsigned char usb_available;
-#line 43 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/usb.h"
+#line 44 "d:/area de trabalho/projeto sistema central de controle/firmware_pic18f4550/library/framework/usb/usb.h"
 void USB_init();
 void USB_index_data();
 #line 3 "D:/Area de Trabalho/Projeto Sistema Central de Controle/Firmware_PIC18F4550/library/framework/usb/usb.c"

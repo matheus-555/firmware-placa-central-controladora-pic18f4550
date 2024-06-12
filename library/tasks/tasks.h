@@ -9,6 +9,7 @@
 #include "painel_comando/painel_comando.h"
 #include "semaforo/semaforo.h"
 #include "controle_on_off/controle_on_off.h"
+#include <stdint.h>
 
 typedef enum TASKS_id
 {
@@ -24,7 +25,7 @@ typedef enum TASKS_id
 
 typedef void (*TASK_function_t)(void);
 
-void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task);
+void TASKS_add(TASK_function_t init, TASK_function_t main, uint8_t id_task);
 void TASKS_main();
 
 

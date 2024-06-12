@@ -1,10 +1,6 @@
 #include "library/system/system.h"
 
-#if DEBUG == 1
-#define SET_BIT set_bit(LATC, 2)
-#define CLR_BIT clr_bit(LATC, 2)
-#define TOOGLE_BIT tgl_bit(LATC, 2)
-#endif
+
 
 void system_init();
 
@@ -47,9 +43,13 @@ void main()
 
 void system_init()
 {
-#if DEBUG == 0
      // ADC
      ADC_init();
+
+     #if DEBUG == 1
+          TRISC &= ~(1<<TRISC6);
+          LATC  &= ~(1<<TRISC6);
+     #endif
 
      // Gpio
      GPIO_init();
@@ -64,25 +64,5 @@ void system_init()
 
      // Interrupcoes
      INTERRUPT_init();
-#else
-     TRISC &= ~(1 << TRISC6);
-     LATC  &= ~(1 << TRISC6);
 
-     // ADC
-     ADC_init();
-
-     // Gpio
-     GPIO_init();
-     PWM_init(3E3);
-
-     // USB
-     USB_init();
-
-     // Timers
-     TIMER0_init(1E-3);
-     TIMER0_start(true);
-
-     // Interrupcoes
-     INTERRUPT_init();
-#endif
 }

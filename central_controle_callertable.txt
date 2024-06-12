@@ -2,10 +2,9 @@ main
 	TASKS_add
 	system_init
 		ADC_init
+			MATH_get_exponte_base_2
 		GPIO_init
 		PWM_init
-			double2word
-				SETIOV3224
 			PWM_SetFrequency
 				Div_32x32_U
 		USB_init
@@ -79,25 +78,6 @@ main
 					USB_Prepare_Next_Setup_Trf
 	ADC_read_all
 		ADC_read_channel
-		word2double
-			NRM3232
-				RES032
-				SETFUN32
-				FIXSIGN32
-		Add_32x32_FP
-			NRM4032
-				SETFUN32
-				FIXSIGN32
-				SETFOV32
-				RES032
-			SETFOV32
-		Div_32x32_FP
-			SETFDZ32
-			RES032
-			SETFOV32
-			SETFUN32
-		double2word
-			SETIOV3224
 interrupt
 	TASKS_main
 		____DoIFC

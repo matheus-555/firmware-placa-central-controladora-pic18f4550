@@ -51,7 +51,7 @@ L_TIMER0_init1:
 	BCF         T0CON+0, 1 
 ;timer0.c,49 :: 		set_bit(T0CON, T0PS0);
 	BSF         T0CON+0, 0 
-;timer0.c,52 :: 		tmr0_value = TIMER0_VALOR_DESEJADO_SECONDS(tempo_desejado);
+;timer0.c,52 :: 		tmr0_value = (uint8_t) TIMER0_VALOR_DESEJADO_SECONDS(tempo_desejado);
 	MOVF        FARG_TIMER0_init_tempo_desejado+0, 0 
 	MOVWF       R0 
 	MOVF        FARG_TIMER0_init_tempo_desejado+1, 0 

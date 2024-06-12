@@ -5,11 +5,11 @@
 #define PID_btn_start (PORTB & (1 << 0))
 #define PID_btn_reset (PORTB & (1 << 1))
 #define PID_btn_stop (PORTB & (1 << 2))
-#define PID_setpoint ADC_variable.an[1]
+#define PID_setpoint ADC_variable.an[ADC_PIN_AD_CH_1]
 
 // -- Inputs Logicas
 #define PID_level_meter (readBuffer[13] | (readBuffer[14] << 8))
-// #define PID_flow_meter (readBuffer[15] | (readBuffer[16] << 8))
+
 
 // -- Saidas Fisicas
 #define PID_start_light_on (set_bit(LATD, 0))
@@ -29,6 +29,9 @@
     writeBuffer[20] = val;       \
     writeBuffer[21] = (val >> 8)
 
+
+#define CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(val) (val * 0.1); 
+
 static enum {
     T_PID = 0,
     T_TGL_STOP,
@@ -43,32 +46,16 @@ static void stop();
 // Atributos private
 static SOFT_TIMER_t timer[T_LENGTH];
 
-// --- Parâmetros PID
-// KP = 5.0
-// KI = 0.5
-// KD = 0.2
-static const float KP = 5.0, KI = 0.5, KD = 0.2;
-
 // Ponto de ajuste do nível do tanque
 static float setpoint;
 
 // Nível atual do tanque
 static float tank_level;
 
-// INTEGRAL
-static float integral = 0.0, previous_error = 0.0;
-
-// Limite para antiwindup
-static const float MAX_VAL_INTEGRAL = 100.0;
-static float previous_derivative = 0.0;
-
-// Fator de filtragem derivativa
-static const float ALPHA = 0.1;
-
 static float control_output = 0;
-static unsigned value_pwm = 0;
+static uint16_t value_pwm = 0;
 
-static bool isStart;
+static bool isStart = false;
 
 void CONTROLE_PID_init()
 {
@@ -90,7 +77,7 @@ void CONTROLE_PID_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_PID], 100))
+        if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
         {
             tank_level = PID_level_meter;
             setpoint = PID_setpoint;
@@ -104,8 +91,8 @@ void CONTROLE_PID_main()
                 PWM2_set_duty_cycle(0);
 
                 // Seta duty cycle para a valvula de entrada
-                PID_fill_valve((unsigned)control_output);
-                value_pwm = (control_output / 1023) * 100;
+                PID_fill_valve((uint16_t)control_output);
+                value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
             else
@@ -116,8 +103,8 @@ void CONTROLE_PID_main()
                 PWM1_set_duty_cycle(0);
 
                 // Seta duty cycle para a valvula de saida
-                PID_discharge_valve((unsigned)-control_output);
-                value_pwm = (-control_output / 1023) * 100;
+                PID_discharge_valve((uint16_t)control_output);
+                value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
         }
@@ -151,23 +138,27 @@ static void start()
 
 static float calculate_PID(float setpoint, float nivel_tanque)
 {
-    float error = setpoint - nivel_tanque;
-    float derivative;
+    // KP = 5.0, KI = 0.5, KD = 0.2
+    static const float KP = 5.0, KI = 0.5, KD = 0.2;
 
-    integral += error;
+    // Limite para antiwindup
+    static const float MAX_VAL_SAT_INTEGRAL = 10.0;
+    static const float MIN_VAL_SAT_INTEGRAL = -10.0;
 
-    if (integral > MAX_VAL_INTEGRAL)
-        integral = MAX_VAL_INTEGRAL; // Limitar integral para antiwindup
+    static float integral = 0.0, erro_anterior = 0.0;
 
-    if (integral < -MAX_VAL_INTEGRAL)
-        integral = -MAX_VAL_INTEGRAL; // Limitar integral para antiwindup
+    float        erro          = setpoint - nivel_tanque;
+    float        derivada      = erro - erro_anterior;
 
-    derivative = (error - previous_error);
+    integral += erro;
 
-    // Filtragem derivativa
-    derivative = ALPHA * derivative + (1 - ALPHA) * previous_derivative;
-    previous_error = error;
-    previous_derivative = derivative;
+    // Limitar integral para antiwindup
+    if (integral > MAX_VAL_SAT_INTEGRAL)
+        integral = MAX_VAL_SAT_INTEGRAL; 
+    else if (integral < MIN_VAL_SAT_INTEGRAL)
+        integral = MIN_VAL_SAT_INTEGRAL; 
 
-    return (KP * error) + (KI * integral) + (KD * derivative);
+    erro_anterior = erro;
+
+    return (KP * erro) + (KI * integral) + (KD * derivada);
 }

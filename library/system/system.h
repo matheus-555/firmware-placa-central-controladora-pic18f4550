@@ -73,11 +73,22 @@
 
 #define SYSTEM_FOSC_CPU 48000000UL
 
-#define DEBUG 0
+#define DEBUG 1
 
-#define DEBUG_TEMPO_GASTO(ROTINA) LATC |= (1 << TRISC6); \
-                                  ROTINA; \
-                                  LATC &= ~(1 << TRISC6)
+#if DEBUG == 1
+    #define SET_BIT set_bit(LATC, 6)
+    #define CLR_BIT clr_bit(LATC, 6)
+    #define TOOGLE_BIT tgl_bit(LATC, 6)
+
+    #define DEBUG_TEMPO_GASTO(ROTINA) LATC |= (1 << TRISC6); \
+                                      ROTINA; \
+                                      LATC &= ~(1 << TRISC6)
+
+    #define DEBUG_LIGA_PIN()    SET_BIT
+    #define DEBUG_DESLIGA_PIN() CLR_BIT
+#endif
+
+
 
 #include "../framework/inc.h"
 #include "../tasks/tasks.h"

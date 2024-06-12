@@ -4,6 +4,7 @@
 #include "../../system/system.h"
 #include "../macros/macros.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 enum
 {

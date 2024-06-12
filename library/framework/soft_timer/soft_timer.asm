@@ -23,7 +23,7 @@ L_end_SOFT_TIMER_init:
 
 _SOFT_TIMER_delay_ms:
 
-;soft_timer.c,16 :: 		bool SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, unsigned delay_ms)
+;soft_timer.c,16 :: 		bool SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, uint16_t delay_ms)
 ;soft_timer.c,18 :: 		if (++(timer->temp_mili_segundos) >= delay_ms)
 	MOVLW       2
 	ADDWF       FARG_SOFT_TIMER_delay_ms_timer+0, 0 
@@ -84,7 +84,7 @@ L_end_SOFT_TIMER_delay_ms:
 
 _SOFT_TIMER_delay_s:
 
-;soft_timer.c,26 :: 		bool SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, unsigned delay_s)
+;soft_timer.c,26 :: 		bool SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, uint16_t delay_s)
 ;soft_timer.c,30 :: 		if (++aux_temp_ms >= SOFT_TIMER_TEMPO_1S)
 	INFSNZ      SOFT_TIMER_delay_s_aux_temp_ms_L0+0, 1 
 	INCF        SOFT_TIMER_delay_s_aux_temp_ms_L0+1, 1 

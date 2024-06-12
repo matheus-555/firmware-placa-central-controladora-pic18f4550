@@ -13,7 +13,7 @@ void SOFT_TIMER_init(SOFT_TIMER_t *timer)
     timer->temp_segundos = 0;
 }
 
-bool SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, unsigned delay_ms)
+bool SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, uint16_t delay_ms)
 {
     if (++(timer->temp_mili_segundos) >= delay_ms)
     {
@@ -23,9 +23,9 @@ bool SOFT_TIMER_delay_ms(SOFT_TIMER_t *timer, unsigned delay_ms)
     return false;
 }
 
-bool SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, unsigned delay_s)
+bool SOFT_TIMER_delay_s(SOFT_TIMER_t *timer, uint16_t delay_s)
 {
-    static unsigned aux_temp_ms = 0;
+    static uint16_t aux_temp_ms = 0;
 
     if (++aux_temp_ms >= SOFT_TIMER_TEMPO_1S)
     {

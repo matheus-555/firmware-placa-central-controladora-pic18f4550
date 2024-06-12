@@ -2,20 +2,31 @@
 #define __ADC_H__
 
 #include "../macros/macros.h"
+#include "../math/math.h"
+#include <stdint.h>
 
+
+// --- Ios analogicas
 #define ADC_PIN_AD_CH_0 RA0
 #define ADC_PIN_AD_CH_1 RA1
 #define ADC_PIN_AD_CH_2 RA2
 #define ADC_QTDE_CH 3
 
-//#define ADC_LER_CANAL(canal) ADC_read(canal)
+// --- Parametrizacao
+// 1 = Sim
+// 2 = Nao
+#define ADC_MEDIA_MOVEL 1
+
+
+// Colocar um valor que esteja na base 2
+#define ADC_QTDE_LEITURA (16)
 
 extern struct {
-    unsigned an[ADC_QTDE_CH];
+    uint16_t an[ADC_QTDE_CH];
 }ADC_variable;
 
 void ADC_init();
-unsigned ADC_read_channel(unsigned char ch);
+uint16_t ADC_read_channel(uint8_t ch);
 void ADC_read_all();
 
 

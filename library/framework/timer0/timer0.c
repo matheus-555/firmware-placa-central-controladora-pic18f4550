@@ -18,14 +18,14 @@ struct
 } timer0;
 
 
-static const unsigned int TIMER0_IS_FINALIZADO[TIMER0_LENGTH] = {
+static const uint16_t TIMER0_IS_FINALIZADO[TIMER0_LENGTH] = {
     TIMER0_IS_1MS,
     TIMER0_IS_2MS,
     TIMER0_IS_3MS,
     TIMER0_IS_5MS};
 
-static unsigned char tmr0_value;
-static unsigned int tmr0_ticks[TIMER0_LENGTH] = {
+static uint8_t tmr0_value;
+static uint16_t tmr0_ticks[TIMER0_LENGTH] = {
     0,
 };
 
@@ -49,7 +49,7 @@ void TIMER0_init(double tempo_desejado)
     set_bit(T0CON, T0PS0);
 
     // Overflow a cada 1 ms
-    tmr0_value = TIMER0_VALOR_DESEJADO_SECONDS(tempo_desejado);
+    tmr0_value = (uint8_t) TIMER0_VALOR_DESEJADO_SECONDS(tempo_desejado);
 }
 
 void TIMER0_start(bool isStart)
@@ -70,7 +70,7 @@ void TIMER0_start(bool isStart)
 void TIMER0_ISR()
 {
     register i;
-    unsigned int *ptr;
+    uint16_t *ptr;
 
     for (i = 0, ptr = &tmr0_ticks[0]; i < TIMER0_LENGTH; ++i, ++ptr)
     {

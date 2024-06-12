@@ -7,7 +7,7 @@ static struct
 } task_kernel;
 
 
-void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
+void TASKS_add(TASK_function_t init, TASK_function_t main, uint8_t id_task)
 {
     task_kernel.init[id_task] = init;
     task_kernel.main[id_task] = main;
@@ -26,6 +26,14 @@ void TASKS_main()
         tmp_modo = MODO_FUNCIONAMENTO_R;
     }
 
+    #if DEBUG == 1
+        DEBUG_LIGA_PIN();
+    #endif
+
     // Executa tarefa selecionada
     task_kernel.main[MODO_FUNCIONAMENTO_R]();
+
+    #if DEBUG == 1
+        DEBUG_DESLIGA_PIN();
+    #endif
 }

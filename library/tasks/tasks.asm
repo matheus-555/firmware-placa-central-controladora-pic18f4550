@@ -1,11 +1,11 @@
 
 _TASKS_add:
 
-;tasks.c,10 :: 		void TASKS_add(TASK_function_t init, TASK_function_t main, unsigned id_task)
+;tasks.c,10 :: 		void TASKS_add(TASK_function_t init, TASK_function_t main, uint8_t id_task)
 ;tasks.c,12 :: 		task_kernel.init[id_task] = init;
 	MOVF        FARG_TASKS_add_id_task+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_TASKS_add_id_task+1, 0 
+	MOVLW       0
 	MOVWF       R1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
@@ -30,7 +30,7 @@ _TASKS_add:
 ;tasks.c,13 :: 		task_kernel.main[id_task] = main;
 	MOVF        FARG_TASKS_add_id_task+0, 0 
 	MOVWF       R0 
-	MOVF        FARG_TASKS_add_id_task+1, 0 
+	MOVLW       0
 	MOVWF       R1 
 	RLCF        R0, 1 
 	BCF         R0, 0 
@@ -64,7 +64,9 @@ _TASKS_main:
 	BSF         _writeBuffer+5, 0 
 ;tasks.c,27 :: 		}
 L_TASKS_main0:
-;tasks.c,30 :: 		task_kernel.main[MODO_FUNCIONAMENTO_R]();
+;tasks.c,30 :: 		DEBUG_LIGA_PIN();
+	BSF         LATC+0, 6 
+;tasks.c,34 :: 		task_kernel.main[MODO_FUNCIONAMENTO_R]();
 	MOVF        _readBuffer+5, 0 
 	MOVWF       R0 
 	MOVLW       0
@@ -90,7 +92,9 @@ L_TASKS_main0:
 	MOVF        POSTINC0+0, 0 
 	MOVWF       R3 
 	CALL        _____DoIFC+0, 0
-;tasks.c,31 :: 		}
+;tasks.c,37 :: 		DEBUG_DESLIGA_PIN();
+	BCF         LATC+0, 6 
+;tasks.c,39 :: 		}
 L_end_TASKS_main:
 	RETURN      0
 ; end of _TASKS_main

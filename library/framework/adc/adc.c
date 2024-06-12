@@ -1,12 +1,13 @@
 #include "adc.h"
 
-#define MEDIA_MOVEL 1
 
-#define QTDE_LEITURA ((char)16)
+#if ADC_MEDIA_MOVEL == 1
+static uint8_t ADC_QTDE_LEITURA_BINARIO = 0;
+#endif
 
 struct
 {
-    unsigned an[ADC_QTDE_CH];
+    uint16_t an[ADC_QTDE_CH];
 } ADC_variable;
 
 // ATENÇÃO: TEMPO MINIMO DE AQUISICAO RECOMENDADO = 2,45 us
@@ -21,6 +22,10 @@ struct
 void ADC_init()
 {
     register i;
+
+    #if ADC_MEDIA_MOVEL == 1
+        ADC_QTDE_LEITURA_BINARIO = MATH_get_exponte_base_2((uint16_t) ADC_QTDE_LEITURA);
+    #endif
 
     // Seta pinos como entrada
     set_bit(TRISA, ADC_PIN_AD_CH_0);
@@ -49,12 +54,10 @@ void ADC_init()
 
     // Liga ADC
     set_bit(ADCON0, ADON);
-
-    // ADC_init();
 }
 
 // Gasta aproximadamente 18,181 KHz (55 us) para executar
-unsigned ADC_read_channel(unsigned char ch)
+uint16_t ADC_read_channel(uint8_t ch)
 {
     // Define o canal ADC que sera utilizado
     ADCON0 |= (ch << 2);
@@ -83,28 +86,28 @@ unsigned ADC_read_channel(unsigned char ch)
     ADCON0 &= 0x03;
 
     // Retorna digitalizacao
-    return ((ADRESH << 8) + ADRESL);
+    return ((ADRESH << 8) | ADRESL);
 }
 
 void ADC_read_all()
 {
-    register char canal;
+    register canal;
 
-#if MEDIA_MOVEL == 0
+#if ADC_MEDIA_MOVEL == 0
     for (canal = 0; canal < ADC_QTDE_CH; ++canal)
         ADC_variable.an[canal] = ADC_read_channel(canal);
 #else
-    register char i;
-    float tmp_val;
+    register i;
+    uint16_t tmp_val;
 
     for (canal = 0; canal < ADC_QTDE_CH; ++canal)
     {
         tmp_val = 0;
 
-        for (i = 0; i < QTDE_LEITURA; ++i)
+        for (i = 0; i < ADC_QTDE_LEITURA; ++i)
             tmp_val += ADC_read_channel(canal);
 
-        ADC_variable.an[canal] = (tmp_val / QTDE_LEITURA);
+        ADC_variable.an[canal] = (tmp_val >> ADC_QTDE_LEITURA_BINARIO);
     }
 #endif
 }

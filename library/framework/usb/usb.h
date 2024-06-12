@@ -1,6 +1,9 @@
 #ifndef __USB_H__
 #define __USB_H__
 
+//  VIDE MAPEAMENTO PARA ENCONTRAR OS ENDERECO CORRESPONDENTE A CADA FUNCIONALIDADE
+//
+
 #include "../macros/macros.h"
 #include "../adc/adc.h"
 
@@ -33,12 +36,10 @@ extern unsigned char usb_available;
 #define USB_PORTD (readBuffer[8])
 //------------------------------------------------------------------------------
 // --- Controle PWM
-#define USB_PWM1_BYTE_1 readBuffer[10]
-#define USB_PWM1_BYTE_2 readBuffer[11]
-#define USB_PWM1_GET_DUTY() ((USB_PWM1_BYTE_2 << 8) | USB_PWM1_BYTE_1)
-#define USB_PWM2_BYTE_1 readBuffer[17]
-#define USB_PWM2_BYTE_2 readBuffer[18]
-#define USB_PWM2_GET_DUTY() ((USB_PWM2_BYTE_2 << 8) | USB_PWM2_BYTE_1)
+#define USB_PWM1_DUTY_PORCENT readBuffer[10]
+#define USB_PWM1_GET_DUTY() (USB_PWM1_DUTY_PORCENT)
+#define USB_PWM2_DUTY_PORCENT readBuffer[17]
+#define USB_PWM2_GET_DUTY() (USB_PWM2_DUTY_PORCENT)
 
 void USB_init();
 void USB_index_data();
