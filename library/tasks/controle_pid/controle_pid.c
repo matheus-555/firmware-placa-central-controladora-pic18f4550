@@ -29,8 +29,11 @@
     writeBuffer[20] = val;       \
     writeBuffer[21] = (val >> 8)
 
+// Define tempo de escalonamento do PID
+#define CONTROLE_PID_START_CALC_MS 500
 
-#define CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(val) (val * 0.1); 
+#define CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(val) (val * 0.1);
+#define CONTROLE_PID_MS_TO_SEG(val) (val/1000.0)
 
 static enum {
     T_PID = 0,
@@ -77,10 +80,10 @@ void CONTROLE_PID_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_PID], 1000))
+        if (SOFT_TIMER_delay_ms(&timer[T_PID], CONTROLE_PID_START_CALC_MS))
         {
             tank_level = PID_level_meter;
-            setpoint = PID_setpoint;
+            setpoint   = PID_setpoint;
 
             control_output = calculate_PID(setpoint, tank_level);
 
@@ -91,7 +94,7 @@ void CONTROLE_PID_main()
                 PWM2_set_duty_cycle(0);
 
                 // Seta duty cycle para a valvula de entrada
-                PID_fill_valve((uint16_t)control_output);
+                PID_fill_valve((uint16_t) (control_output > 1000 ? 1000 : control_output));
                 value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
@@ -103,7 +106,7 @@ void CONTROLE_PID_main()
                 PWM1_set_duty_cycle(0);
 
                 // Seta duty cycle para a valvula de saida
-                PID_discharge_valve((uint16_t)control_output);
+                PID_discharge_valve((uint16_t) (control_output > 1000 ? 1000 : control_output));
                 value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
@@ -140,6 +143,7 @@ static float calculate_PID(float setpoint, float nivel_tanque)
 {
     // KP = 5.0, KI = 0.5, KD = 0.2
     static const float KP = 5.0, KI = 0.5, KD = 0.2;
+    static const float DT = CONTROLE_PID_MS_TO_SEG(CONTROLE_PID_START_CALC_MS);
 
     // Limite para antiwindup
     static const float MAX_VAL_SAT_INTEGRAL = 10.0;
@@ -148,9 +152,9 @@ static float calculate_PID(float setpoint, float nivel_tanque)
     static float integral = 0.0, erro_anterior = 0.0;
 
     float        erro          = setpoint - nivel_tanque;
-    float        derivada      = erro - erro_anterior;
+    float        derivada      = (erro - erro_anterior) / DT;
 
-    integral += erro;
+    integral = integral + (erro * DT);
 
     // Limitar integral para antiwindup
     if (integral > MAX_VAL_SAT_INTEGRAL)

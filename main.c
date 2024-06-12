@@ -23,20 +23,23 @@ void main()
 
      for (;;)
      {
-          // x ms foi o tempo de execucao maximo para esse bloco
           if (timer0.is_finalizado[TIMER0_1MS])
           {
-               USB_READ_BUFF();
+               USB_READ_BUFF(); // Maximo de 7,40 us para executar
                timer0.is_finalizado[TIMER0_1MS] = false;
           }
 
-          // x ms foi o tempo de execucao maximo para esse bloco
           if (timer0.is_finalizado[TIMER0_3MS])
           {
-               USB_index_data();
-               USB_SEND_DATA();
-               ADC_read_all();
+               USB_index_data(); // Constante 3 us para executar
+               ADC_read_all();  // Maximo de 380 us para executar
                timer0.is_finalizado[TIMER0_3MS] = false;
+          }
+
+          if (timer0.is_finalizado[TIMER0_10MS])
+          {
+               USB_SEND_DATA(); // Maximo de 5,68 ms para executar
+               timer0.is_finalizado[TIMER0_10MS] = false;
           }
      }
 }

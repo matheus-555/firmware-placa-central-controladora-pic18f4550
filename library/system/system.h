@@ -73,7 +73,7 @@
 
 #define SYSTEM_FOSC_CPU 48000000UL
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG == 1
     #define SET_BIT set_bit(LATC, 6)
@@ -86,6 +86,7 @@
 
     #define DEBUG_LIGA_PIN()    SET_BIT
     #define DEBUG_DESLIGA_PIN() CLR_BIT
+    #define DEBUG_TOGGLE_PIN()  TOOGLE_BIT
 #endif
 
 

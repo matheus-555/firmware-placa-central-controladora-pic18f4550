@@ -7,10 +7,10 @@
 #define TIMER0_TIME_DEFINED_SECONDS 1E-3
 #define TIMER0_VALOR_DESEJADO_SECONDS(seg) ((1 << TIMER0_MODO_BITS) - (seg * (SYSTEM_FOSC_CPU >> 2) / TIMER0_PREESCALER))
 
-#define TIMER0_IS_1MS 1
-#define TIMER0_IS_2MS 2
-#define TIMER0_IS_3MS 3
-#define TIMER0_IS_5MS 5
+#define TIMER0_IS_1MS   1
+#define TIMER0_IS_2MS   2
+#define TIMER0_IS_3MS   3
+#define TIMER0_IS_10MS 10
 
 struct
 {
@@ -22,7 +22,7 @@ static const uint16_t TIMER0_IS_FINALIZADO[TIMER0_LENGTH] = {
     TIMER0_IS_1MS,
     TIMER0_IS_2MS,
     TIMER0_IS_3MS,
-    TIMER0_IS_5MS};
+    TIMER0_IS_10MS};
 
 static uint8_t tmr0_value;
 static uint16_t tmr0_ticks[TIMER0_LENGTH] = {

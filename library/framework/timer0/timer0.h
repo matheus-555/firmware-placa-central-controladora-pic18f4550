@@ -11,7 +11,7 @@ enum
     TIMER0_1MS = 0,
     TIMER0_2MS,
     TIMER0_3MS,
-    TIMER0_5MS,
+    TIMER0_10MS,
     TIMER0_LENGTH
 };
 

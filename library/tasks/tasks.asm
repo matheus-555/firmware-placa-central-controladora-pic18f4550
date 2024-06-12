@@ -64,9 +64,7 @@ _TASKS_main:
 	BSF         _writeBuffer+5, 0 
 ;tasks.c,27 :: 		}
 L_TASKS_main0:
-;tasks.c,30 :: 		DEBUG_LIGA_PIN();
-	BSF         LATC+0, 6 
-;tasks.c,34 :: 		task_kernel.main[MODO_FUNCIONAMENTO_R]();
+;tasks.c,30 :: 		task_kernel.main[MODO_FUNCIONAMENTO_R]();
 	MOVF        _readBuffer+5, 0 
 	MOVWF       R0 
 	MOVLW       0
@@ -92,9 +90,7 @@ L_TASKS_main0:
 	MOVF        POSTINC0+0, 0 
 	MOVWF       R3 
 	CALL        _____DoIFC+0, 0
-;tasks.c,37 :: 		DEBUG_DESLIGA_PIN();
-	BCF         LATC+0, 6 
-;tasks.c,39 :: 		}
+;tasks.c,31 :: 		}
 L_end_TASKS_main:
 	RETURN      0
 ; end of _TASKS_main

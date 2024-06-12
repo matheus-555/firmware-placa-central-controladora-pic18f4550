@@ -26,14 +26,6 @@ void TASKS_main()
         tmp_modo = MODO_FUNCIONAMENTO_R;
     }
 
-    #if DEBUG == 1
-        DEBUG_LIGA_PIN();
-    #endif
-
     // Executa tarefa selecionada
     task_kernel.main[MODO_FUNCIONAMENTO_R]();
-
-    #if DEBUG == 1
-        DEBUG_DESLIGA_PIN();
-    #endif
 }
