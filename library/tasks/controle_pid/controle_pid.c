@@ -98,7 +98,7 @@ void CONTROLE_PID_main()
                 value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM1_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
-            else
+            else if (control_output < 0)
             {
                 control_output = -control_output;
                 // Seta duty cycle para a valvula de entrada
@@ -110,7 +110,17 @@ void CONTROLE_PID_main()
                 value_pwm = CONTROLE_PID_CONVERT_TO_PWM_DUTY_PORCENT(control_output);
                 PWM2_set_duty_cycle(value_pwm > 100 ? 100 : value_pwm);
             }
-        }
+            else 
+            {
+                // Seta duty cycle para a valvula de entrada
+                PID_fill_valve(0);
+                PWM1_set_duty_cycle(0);
+
+                // Seta duty cycle para a valvula de saida
+                PID_discharge_valve(0);
+                PWM2_set_duty_cycle(0);
+            }   
+        } // SoftTimer()
     } // end start
     else
         stop();

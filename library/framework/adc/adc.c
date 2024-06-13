@@ -10,15 +10,13 @@ struct
     uint16_t an[ADC_QTDE_CH];
 } ADC_variable;
 
-// ATENÇÃO: TEMPO MINIMO DE AQUISICAO RECOMENDADO = 2,45 us
+// ATENÇÃO: TEMPO MINIMO PARA CARGA DO CAPACITOR = 2,45 us
 //
 // CONFIGURAÇÕES DO ADC
 //
 //
-// clock_adc        = 48E6/8             -> 6 MHz
-// tempo_conv       = 16 * clock_adc     -> 2,66 us
-// tempo_amostragem = 2,5us + tempo_conv -> 5,66 us
-// freq_simple      = 1/tempo_amostragem -> ~193,798 KHz
+// clock_adc           = (48E6/2)/2     -> 12 MHz
+// tempo_conv          = 16 * clock_adc -> 1,33 us
 void ADC_init()
 {
     register i;
@@ -47,16 +45,16 @@ void ADC_init()
     set_bit(ADCON2, ACQT1);
     clr_bit(ADCON2, ACQT0);
 
-    // Define clock de trabalho do ADC em (FOSC/8) -> 48E6/8 -> 6 MHz
+    // Define clock de trabalho do ADC em ((FOSC/2)/2) -> (48E6/2)/2 -> 12 MHz
     clr_bit(ADCON2, ADCS2);
     clr_bit(ADCON2, ADCS1);
-    set_bit(ADCON2, ADCS0);
+    clr_bit(ADCON2, ADCS0);
 
     // Liga ADC
     set_bit(ADCON0, ADON);
 }
 
-// Gasta aproximadamente 18,181 KHz (55 us) para executar
+// Gasta aproximadamente 6,203 us para executar (~ 161,212 KHz)
 uint16_t ADC_read_channel(uint8_t ch)
 {
     // Define o canal ADC que sera utilizado
@@ -64,16 +62,22 @@ uint16_t ADC_read_channel(uint8_t ch)
 
     // Aguarda tempo de aquisicao(2,5us)
     asm {
-        #define __ASM_CICLOS 0x20
-
-        MOVLW 14                //Carrega o literal 10 em WREG (1 ciclo)
-        MOVWF __ASM_CICLOS      //Move WREG para o registrador __ASM_CICLOS (1 ciclo)
-    
+        // CICLO            = 83,33ns
+        // DELAY_LOOP       = 5 * CICLO 
+        // __ASM_QTDE_CICLO = 2,5us / DELAY_LOOP
+        #define __ASM_REG_AUX    0x20
+        #define __ASM_QTDE_CICLO 5
+        MOVLW __ASM_QTDE_CICLO            //Carrega o literal 10 em WREG (1 ciclo)
+        MOVWF __ASM_REG_AUX //Move WREG para o registrador __ASM_REG_AUX (1 ciclo)
         DELAY_LOOP:
         NOP                     //No Operation (1 ciclo)
-        DECFSZ __ASM_CICLOS, 1  //Decrementa __ASM_CICLOS e salta se zero (2 ciclos se não saltar, 1 ciclo se saltar)
+        DECFSZ __ASM_REG_AUX, 1 //Decrementa __ASM_REG_AUX e salta se zero (2 ciclos se não saltar, 1 ciclo se saltar)
         GOTO DELAY_LOOP         //Vai para DELAY_LOOP (2 ciclos)
-        #undef __ASM_CICLOS
+        NOP //No Operation (1 ciclo)
+        NOP //No Operation (1 ciclo)
+        NOP //No Operation (1 ciclo)
+        #undef __ASM_REG_AUX
+        #undef __ASM_QTDE_CICLO
     }
 
     // Inicia conversao

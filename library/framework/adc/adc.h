@@ -1,6 +1,7 @@
 #ifndef __ADC_H__
 #define __ADC_H__
 
+#include "../../system/system.h"
 #include "../macros/macros.h"
 #include "../math/math.h"
 #include <stdint.h>
