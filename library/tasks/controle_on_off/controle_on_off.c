@@ -7,9 +7,11 @@
 #define ON_OFF_btn_stop (PORTB & (1 << 2))
 #define ON_OFF_setpoint ADC_variable.an[1]
 
+// Define tempo de escalonamento do PID
+#define ON_OFF_START_CALC_MS 500
+
 // -- Inputs Logicas
 #define ON_OFF_level_meter (readBuffer[13] | (readBuffer[14] << 8))
-// #define ON_OFF_flow_meter (readBuffer[15] | (readBuffer[16] << 8))
 
 // -- Saidas Fisicas
 #define ON_OFF_start_light_on (set_bit(LATD, 0))
@@ -86,7 +88,7 @@ void CONTROLE_ON_OFF_main()
 
     if (isStart)
     {
-        if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], 1000))
+        if (SOFT_TIMER_delay_ms(&timer[T_ON_OFF], ON_OFF_START_CALC_MS))
         {
             if (ON_OFF_setpoint != ON_OFF_level_meter)
             {
