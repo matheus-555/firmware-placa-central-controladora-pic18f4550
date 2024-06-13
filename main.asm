@@ -163,10 +163,10 @@ L_main3:
 	MOVF        _timer0+2, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_main4
-;main.c,34 :: 		USB_index_data(); // Constante 3 us para executar
-	CALL        _USB_index_data+0, 0
-;main.c,35 :: 		ADC_read_all();  // Maximo de 380 us para executar
+;main.c,34 :: 		ADC_read_all();  // Maximo de 380 us para executar
 	CALL        _ADC_read_all+0, 0
+;main.c,35 :: 		USB_index_data(); // Constante 3 us para executar
+	CALL        _USB_index_data+0, 0
 ;main.c,36 :: 		timer0.is_finalizado[TIMER0_3MS] = false;
 	CLRF        _timer0+2 
 ;main.c,37 :: 		}

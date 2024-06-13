@@ -31,8 +31,8 @@ void main()
 
           if (timer0.is_finalizado[TIMER0_3MS])
           {
-               USB_index_data(); // Constante 3 us para executar
                ADC_read_all();  // Maximo de 380 us para executar
+               USB_index_data(); // Constante 3 us para executar
                timer0.is_finalizado[TIMER0_3MS] = false;
           }
 
