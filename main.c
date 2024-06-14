@@ -1,8 +1,9 @@
 #include "library/system/system.h"
 
-
-
 void system_init();
+
+uint16_t amostra = 0;
+
 
 void main()
 {
@@ -41,31 +42,31 @@ void main()
                USB_SEND_DATA(); // Maximo de 5,68 ms para executar
                timer0.is_finalizado[TIMER0_10MS] = false;
           }
+
+          amostra = ADC_read_channel(1);
      }
 }
 
 void system_init()
 {
-     // ADC
+#if DEBUG == 1
+     DEBUG_OUTPUT_PIN();
+     DEBUG_DESLIGA_PIN();
+#else
+     PWM_init(3E3);
+#endif
+     
+     //GPIO_init();
+     
+     // // USB
+     // USB_init();
+
+     // // Timers
+     // TIMER0_init(1E-3);
+     // TIMER0_start(true);
+
      ADC_init();
 
-     #if DEBUG == 1
-          TRISC &= ~(1<<TRISC6);
-          LATC  &= ~(1<<TRISC6);
-     #endif
-
-     // Gpio
-     GPIO_init();
-     PWM_init(3E3);
-
-     // USB
-     USB_init();
-
-     // Timers
-     TIMER0_init(1E-3);
-     TIMER0_start(true);
-
-     // Interrupcoes
-     INTERRUPT_init();
-
+     // // Interrupcoes
+     // INTERRUPT_init();
 }

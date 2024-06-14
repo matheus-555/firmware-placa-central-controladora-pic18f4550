@@ -151,7 +151,7 @@ L_end_PWM2_set_duty_cycle:
 pwm_PWM_SetFrequency:
 
 ;pwm.c,61 :: 		static void PWM_SetFrequency(uint16_t freq)
-;pwm.c,66 :: 		pr2_val = (SYSTEM_FOSC_CPU / (4UL * freq)) - 1;
+;pwm.c,66 :: 		pr2_val = (SYSTEM_FOSC / (4UL * freq)) - 1;
 	MOVF        FARG_pwm_PWM_SetFrequency_freq+0, 0 
 	MOVWF       R4 
 	MOVF        FARG_pwm_PWM_SetFrequency_freq+1, 0 

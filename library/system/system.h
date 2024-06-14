@@ -71,22 +71,27 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-#define SYSTEM_FOSC_CPU 48000000UL
+#define SYSTEM_FOSC 48000000UL
+#define SYSTEM_TOSC (SYSTEM_FOSC/4)
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG == 1
-    #define SET_BIT set_bit(LATC, 6)
-    #define CLR_BIT clr_bit(LATC, 6)
-    #define TOOGLE_BIT tgl_bit(LATC, 6)
+    #define DEBUG_REG_PIN_OUT   TRISC 
+    #define DEBUG_REG_PIN_LEVEL LATC
+    #define DEBUG_BIT_PIN       2
 
-    #define DEBUG_TEMPO_GASTO(ROTINA) LATC |= (1 << TRISC6); \
+    #define DEBUG_OUTPUT_PIN()  clr_bit(DEBUG_REG_PIN_OUT, DEBUG_BIT_PIN)
+    #define DEBUG_LIGA_PIN()    set_bit(DEBUG_REG_PIN_LEVEL, DEBUG_BIT_PIN)
+    #define DEBUG_DESLIGA_PIN() clr_bit(DEBUG_REG_PIN_LEVEL, DEBUG_BIT_PIN)
+    #define DEBUG_TOGGLE_PIN()  tgl_bit(DEBUG_REG_PIN_LEVEL, DEBUG_BIT_PIN)
+
+
+    #define DEBUG_TEMPO_GASTO(ROTINA) DEBUG_LIGA_PIN(); \
                                       ROTINA; \
-                                      LATC &= ~(1 << TRISC6)
+                                      DEBUG_DESLIGA_PIN()
 
-    #define DEBUG_LIGA_PIN()    SET_BIT
-    #define DEBUG_DESLIGA_PIN() CLR_BIT
-    #define DEBUG_TOGGLE_PIN()  TOOGLE_BIT
+
 #endif
 
 

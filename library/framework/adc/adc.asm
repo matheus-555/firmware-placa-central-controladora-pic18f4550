@@ -16,7 +16,10 @@ _ADC_init:
 	BSF         TRISA+0, 1 
 ;adc.c,31 :: 		set_bit(TRISA, ADC_PIN_AD_CH_2);
 	BSF         TRISA+0, 2 
-;adc.c,33 :: 		for (i = 0; i < ADC_QTDE_CH; ++i)
+;adc.c,34 :: 		ADCON1 = 0x0C;
+	MOVLW       12
+	MOVWF       ADCON1+0 
+;adc.c,36 :: 		for (i = 0; i < ADC_QTDE_CH; ++i)
 	CLRF        ADC_init_i_L0+0 
 	CLRF        ADC_init_i_L0+1 
 L_ADC_init0:
@@ -32,7 +35,7 @@ L_ADC_init0:
 L__ADC_init13:
 	BTFSC       STATUS+0, 0 
 	GOTO        L_ADC_init1
-;adc.c,34 :: 		ADC_variable.an[i] = 0;
+;adc.c,37 :: 		ADC_variable.an[i] = 0;
 	MOVF        ADC_init_i_L0+0, 0 
 	MOVWF       R0 
 	MOVF        ADC_init_i_L0+1, 0 
@@ -48,25 +51,22 @@ L__ADC_init13:
 	MOVWF       FSR1L+1 
 	CLRF        POSTINC1+0 
 	CLRF        POSTINC1+0 
-;adc.c,33 :: 		for (i = 0; i < ADC_QTDE_CH; ++i)
+;adc.c,36 :: 		for (i = 0; i < ADC_QTDE_CH; ++i)
 	INFSNZ      ADC_init_i_L0+0, 1 
 	INCF        ADC_init_i_L0+1, 1 
-;adc.c,34 :: 		ADC_variable.an[i] = 0;
+;adc.c,37 :: 		ADC_variable.an[i] = 0;
 	GOTO        L_ADC_init0
 L_ADC_init1:
-;adc.c,37 :: 		ADCON1 = 0x0C;
-	MOVLW       12
-	MOVWF       ADCON1+0 
 ;adc.c,41 :: 		set_bit(ADCON2, ADFM);
 	BSF         ADCON2+0, 7 
-;adc.c,44 :: 		set_bit(ADCON2, ACQT2);
-	BSF         ADCON2+0, 5 
+;adc.c,44 :: 		clr_bit(ADCON2, ACQT2);
+	BCF         ADCON2+0, 5 
 ;adc.c,45 :: 		set_bit(ADCON2, ACQT1);
 	BSF         ADCON2+0, 4 
 ;adc.c,46 :: 		clr_bit(ADCON2, ACQT0);
 	BCF         ADCON2+0, 3 
-;adc.c,49 :: 		clr_bit(ADCON2, ADCS2);
-	BCF         ADCON2+0, 2 
+;adc.c,49 :: 		set_bit(ADCON2, ADCS2);
+	BSF         ADCON2+0, 2 
 ;adc.c,50 :: 		clr_bit(ADCON2, ADCS1);
 	BCF         ADCON2+0, 1 
 ;adc.c,51 :: 		clr_bit(ADCON2, ADCS0);
@@ -91,7 +91,7 @@ _ADC_read_channel:
 	MOVF        R0, 0 
 	IORWF       ADCON0+0, 1 
 ;adc.c,70 :: 		MOVLW __ASM_QTDE_CICLO            //Carrega o literal 10 em WREG (1 ciclo)
-	MOVLW       5
+	MOVLW       6
 ;adc.c,71 :: 		MOVWF __ASM_REG_AUX //Move WREG para o registrador __ASM_REG_AUX (1 ciclo)
 	MOVWF       32, 1
 ;adc.c,72 :: 		DELAY_LOOP:
@@ -102,11 +102,11 @@ DELAY_LOOP:
 	DECFSZ      32, 1, 1
 ;adc.c,75 :: 		GOTO DELAY_LOOP         //Vai para DELAY_LOOP (2 ciclos)
 	GOTO        DELAY_LOOP
-;adc.c,76 :: 		NOP //No Operation (1 ciclo)
+;adc.c,76 :: 		NOP                     //No Operation (1 ciclo)
 	NOP
-;adc.c,77 :: 		NOP //No Operation (1 ciclo)
+;adc.c,77 :: 		NOP                     //No Operation (1 ciclo)
 	NOP
-;adc.c,78 :: 		NOP //No Operation (1 ciclo)
+;adc.c,78 :: 		NOP                     //No Operation (1 ciclo)
 	NOP
 ;adc.c,84 :: 		set_bit(ADCON0, GO_DONE);
 	BSF         ADCON0+0, 1 
@@ -119,7 +119,7 @@ L_ADC_read_channel5:
 ;adc.c,90 :: 		ADCON0 &= 0x03;
 	MOVLW       3
 	ANDWF       ADCON0+0, 1 
-;adc.c,93 :: 		return ((ADRESH << 8) | ADRESL);
+;adc.c,93 :: 		return (ADRESH << 8) | ADRESL;
 	MOVF        ADRESH+0, 0 
 	MOVWF       R1 
 	CLRF        R0 

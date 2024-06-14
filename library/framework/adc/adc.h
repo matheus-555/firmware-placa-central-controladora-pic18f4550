@@ -8,9 +8,9 @@
 
 
 // --- Ios analogicas
-#define ADC_PIN_AD_CH_0 RA0
-#define ADC_PIN_AD_CH_1 RA1
-#define ADC_PIN_AD_CH_2 RA2
+#define ADC_PIN_AD_CH_0 TRISA0
+#define ADC_PIN_AD_CH_1 TRISA1
+#define ADC_PIN_AD_CH_2 TRISA2
 #define ADC_QTDE_CH 3
 
 // --- Parametrizacao

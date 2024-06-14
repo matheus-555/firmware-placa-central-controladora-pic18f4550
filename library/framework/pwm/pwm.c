@@ -63,7 +63,7 @@ static void PWM_SetFrequency(uint16_t freq)
     uint32_t pr2_val;
 
     // Calcula o valor de PR2 com base na frequência desejada
-    pr2_val = (SYSTEM_FOSC_CPU / (4UL * freq)) - 1;
+    pr2_val = (SYSTEM_FOSC / (4UL * freq)) - 1;
 
     // Configura PR2
     PR2 = pr2_val > 255 ? 255 : pr2_val;
