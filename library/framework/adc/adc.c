@@ -20,7 +20,7 @@ struct
 //
 //
 // freq_adc           = (SYSTEM_FOSC/4)/ADCS -> (48MHz/4)/4 -> 12MHz/4 -> 3MHz -> 0,333 us
-// freq_conv          = freq_adc/ACQT    ->  3MHz/4 -> 750 KHz -> 1,333 us
+// freq_conv          = freq_adc/ACQT        ->  3MHz/4 -> 750 KHz -> 1,333 us
 void ADC_init()
 {
     register i;
@@ -71,7 +71,7 @@ uint16_t ADC_read_channel(uint8_t ch)
         // CICLO            = 83,33ns
         // QTDE_CICLO       = 2,5us / CICLO =~ 30 CICLOS
         // DELAY_LOOP       = 5 CICLOS
-        #define __ASM_REG_AUX    0x20
+        #define __ASM_REG_AUX    R20
         #define __ASM_QTDE_CICLO 6
         MOVLW __ASM_QTDE_CICLO            //Carrega o literal 10 em WREG (1 ciclo)
         MOVWF __ASM_REG_AUX //Move WREG para o registrador __ASM_REG_AUX (1 ciclo)

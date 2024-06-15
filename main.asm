@@ -154,7 +154,7 @@ L_main0:
 ;main.c,26 :: 		USB_READ_BUFF(); // Maximo de 17 us para executar
 	CALL        _HID_Read+0, 0
 	MOVF        R0, 0 
-	MOVWF       _usb_available+0 
+	MOVWF       _USB_variable+0 
 ;main.c,27 :: 		timer0.is_finalizado[TIMER0_1MS] = false;
 	CLRF        _timer0+0 
 ;main.c,28 :: 		}

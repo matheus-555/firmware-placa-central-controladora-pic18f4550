@@ -93,13 +93,13 @@ _ADC_read_channel:
 ;adc.c,76 :: 		MOVLW __ASM_QTDE_CICLO            //Carrega o literal 10 em WREG (1 ciclo)
 	MOVLW       6
 ;adc.c,77 :: 		MOVWF __ASM_REG_AUX //Move WREG para o registrador __ASM_REG_AUX (1 ciclo)
-	MOVWF       32, 1
+	MOVWF       R20, 1
 ;adc.c,78 :: 		DELAY_LOOP:
 DELAY_LOOP:
 ;adc.c,79 :: 		NOP                     //No Operation (1 ciclo)
 	NOP
 ;adc.c,80 :: 		DECFSZ __ASM_REG_AUX, 1 //Decrementa __ASM_REG_AUX e salta se zero (2 ciclos se não saltar, 1 ciclo se saltar)
-	DECFSZ      32, 1, 1
+	DECFSZ      R20, 1, 1
 ;adc.c,81 :: 		GOTO DELAY_LOOP         //Vai para DELAY_LOOP (2 ciclos)
 	GOTO        DELAY_LOOP
 ;adc.c,82 :: 		NOP                     //No Operation (1 ciclo)

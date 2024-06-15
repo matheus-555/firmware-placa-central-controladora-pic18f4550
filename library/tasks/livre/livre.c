@@ -3,6 +3,8 @@
 
 void LIVRE_init()
 {
+    MODO_FUNCIONAMENTO_T = TASK_LIVRE;
+    
     LATD = 0x00;
 
     #if DEBUG == 0
@@ -13,9 +15,7 @@ void LIVRE_init()
 
 void LIVRE_main()
 {
-    MODO_FUNCIONAMENTO_T = TASK_LIVRE;
-
-    if (usb_available)
+    if (USB_variable.is_usb_available)
     {
         LATD = (PORTD ^ USB_PORTD);
 

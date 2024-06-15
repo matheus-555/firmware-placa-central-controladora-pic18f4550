@@ -1,21 +1,27 @@
 #ifndef __USB_H__
 #define __USB_H__
 
-//  VIDE MAPEAMENTO PARA ENCONTRAR OS ENDERECO CORRESPONDENTE A CADA FUNCIONALIDADE
+//  VIDE MAPEAMENTO PARA ENCONTRAR OS ENDERECOS CORRESPONDENTE A CADA FUNCIONALIDADE
 //
 
+#include <stdbool.h>
 #include "../macros/macros.h"
 #include "../adc/adc.h"
 
+#define USB_BUFFER_LENGTH 64
+
 #define USB_ISR() USB_Interrupt_Proc()
 #define USB_READ() HID_Read()
-#define USB_SEND_DATA() HID_Write(&writeBuffer, 64)
-#define USB_READ_BUFF() usb_available = USB_READ()
+#define USB_SEND_DATA() HID_Write(&writeBuffer, USB_BUFFER_LENGTH)
+#define USB_READ_BUFF() USB_variable.is_usb_available = USB_READ()
 
 // Variaveis declaradas no usb.c
-extern unsigned char readBuffer[64];
-extern unsigned char writeBuffer[64];
-extern unsigned char usb_available;
+extern uint8_t readBuffer[USB_BUFFER_LENGTH];
+extern uint8_t writeBuffer[USB_BUFFER_LENGTH];
+extern struct {
+    bool is_usb_available;
+} USB_variable;
+
 
 //------------------------------------------------------------------------------
 // --- USB HID

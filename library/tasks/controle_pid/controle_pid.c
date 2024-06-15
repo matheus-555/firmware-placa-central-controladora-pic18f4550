@@ -62,14 +62,13 @@ static bool isStart = false;
 
 void CONTROLE_PID_init()
 {
+    MODO_FUNCIONAMENTO_T = TASK_CONTROLE_PID;
     isStart = false;
     stop();
 }
 
 void CONTROLE_PID_main()
 {
-    MODO_FUNCIONAMENTO_T = TASK_CONTROLE_PID;
-
     if (!PID_btn_stop)
         isStart = false;
     else if (!PID_btn_start)

@@ -193,13 +193,12 @@ static PAINEL_COMANDO_t painel;
 
 void PAINEL_COMANDO_init()
 {
+    MODO_FUNCIONAMENTO_T = TASK_PAINEL_COMANDO;
     Painel_Init(&painel);
 }
 
 void PAINEL_COMANDO_main()
 {
-    MODO_FUNCIONAMENTO_T = TASK_PAINEL_COMANDO;
-
     Painel_Modo(&painel);
 }
 

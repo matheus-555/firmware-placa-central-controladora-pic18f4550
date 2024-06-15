@@ -24,6 +24,7 @@
         "soft_timer.h": "c",
         "painel_comando.h": "c",
         "math.h": "c",
-        "lcd.h": "c"
+        "lcd.h": "c",
+        "controle_on_off.h": "c"
     }
 }

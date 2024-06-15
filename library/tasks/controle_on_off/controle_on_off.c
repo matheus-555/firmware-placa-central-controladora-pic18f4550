@@ -70,14 +70,13 @@ static void start()
 
 void CONTROLE_ON_OFF_init()
 {
+    MODO_FUNCIONAMENTO_T = TASK_CONTROLE_ON_OFF;
     isStart = false;
     stop();
 }
 
 void CONTROLE_ON_OFF_main()
 {
-    MODO_FUNCIONAMENTO_T = TASK_CONTROLE_ON_OFF;
-
     if (!ON_OFF_btn_stop)
         isStart = false;
     else if (!ON_OFF_btn_start)

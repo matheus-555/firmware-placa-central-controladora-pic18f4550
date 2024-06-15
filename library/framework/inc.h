@@ -1,7 +1,8 @@
 #ifndef __INC_FRAMEWORK_H__
 #define __INC_FRAMEWORK_H__
 
-#include <stdbool.h>
+
+
 #include "macros/macros.h"
 #include "adc/adc.h"
 #include "usb/usb.h"

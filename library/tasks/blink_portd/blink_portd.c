@@ -2,13 +2,12 @@
 
 void BLINK_PORTD_init()
 {
-    
+    MODO_FUNCIONAMENTO_T = TASK_BLINK_PORTD;
 }
 
 void BLINK_PORTD_main()
 {
-    static unsigned count = 0;
-    MODO_FUNCIONAMENTO_T = TASK_BLINK_PORTD;
+    static uint16_t count = 0;
 
     if(++count >= 1000)
     {

@@ -19,13 +19,11 @@ static unsigned char estado = 0;
 
 void SEMAFORO_init()
 {
-    
+    MODO_FUNCIONAMENTO_T = TASK_SEMAFORO;
 }
 
 void SEMAFORO_main()
 {
-    MODO_FUNCIONAMENTO_T = TASK_SEMAFORO;
-
     switch (estado)
     {
     //  ESTADO 0 (FASE 1)

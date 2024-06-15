@@ -1,10 +1,10 @@
 #ifndef __ADC_H__
 #define __ADC_H__
 
+#include <stdint.h>
 #include "../../system/system.h"
 #include "../macros/macros.h"
 #include "../math/math.h"
-#include <stdint.h>
 
 
 // --- Ios analogicas

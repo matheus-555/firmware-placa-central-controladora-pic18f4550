@@ -15,15 +15,15 @@ void TASKS_add(TASK_function_t init, TASK_function_t main, uint8_t id_task)
 
 void TASKS_main()
 {
-    static unsigned char tmp_modo = MODO_FUNCIONAMENTO_R;
+    static uint8_t modo_anterior;
 
     // Habilita flag de comunicacao USB
     Flag_Usb_On;
 
-    if (tmp_modo != MODO_FUNCIONAMENTO_R)
+    if (MODO_FUNCIONAMENTO_R != modo_anterior)
     {
         task_kernel.init[MODO_FUNCIONAMENTO_R]();
-        tmp_modo = MODO_FUNCIONAMENTO_R;
+        modo_anterior = MODO_FUNCIONAMENTO_T;
     }
 
     // Executa tarefa selecionada

@@ -1,8 +1,11 @@
 #include "usb.h"
 
-unsigned char readBuffer[64] absolute 0x500;
-unsigned char writeBuffer[64] absolute 0x540;
-unsigned char usb_available = 0;
+uint8_t readBuffer[USB_BUFFER_LENGTH]  absolute 0x500;
+uint8_t writeBuffer[USB_BUFFER_LENGTH] absolute 0x540;
+struct {
+    bool is_usb_available;
+} USB_variable;
+
 
 void USB_init()
 {
