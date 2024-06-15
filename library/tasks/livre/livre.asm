@@ -4,6 +4,12 @@ _LIVRE_init:
 ;livre.c,4 :: 		void LIVRE_init()
 ;livre.c,6 :: 		LATD = 0x00;
 	CLRF        LATD+0 
+;livre.c,9 :: 		PWM1_set_duty_cycle(0);
+	CLRF        FARG_PWM1_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM1_set_duty_cycle+0, 0
+;livre.c,10 :: 		PWM2_set_duty_cycle(0);
+	CLRF        FARG_PWM2_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM2_set_duty_cycle+0, 0
 ;livre.c,12 :: 		}
 L_end_LIVRE_init:
 	RETURN      0
@@ -22,6 +28,14 @@ _LIVRE_main:
 	MOVF        _readBuffer+8, 0 
 	XORWF       PORTD+0, 0 
 	MOVWF       LATD+0 
+;livre.c,23 :: 		PWM1_set_duty_cycle(USB_PWM1_GET_DUTY());
+	MOVF        _readBuffer+10, 0 
+	MOVWF       FARG_PWM1_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM1_set_duty_cycle+0, 0
+;livre.c,24 :: 		PWM2_set_duty_cycle(USB_PWM2_GET_DUTY());
+	MOVF        _readBuffer+17, 0 
+	MOVWF       FARG_PWM2_set_duty_cycle_duty_porcent+0 
+	CALL        _PWM2_set_duty_cycle+0, 0
 ;livre.c,26 :: 		}
 L_LIVRE_main0:
 ;livre.c,29 :: 		}

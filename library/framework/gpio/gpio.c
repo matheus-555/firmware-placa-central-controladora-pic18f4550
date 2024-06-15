@@ -3,9 +3,6 @@
 
 void GPIO_init() 
 {
-    // Define PA0 - PA2 como entrada, PA3-PA7 como saida
-    TRISA    = 0xB7;
-
     // Define PORTB como entrada
     TRISB    = 0xFF;
 

@@ -20,8 +20,8 @@ void LIVRE_main()
         LATD = (PORTD ^ USB_PORTD);
 
         #if DEBUG == 0
-        PWM1_set_duty_cycle(USB_PWM1_GET_DUTY());
-        PWM2_set_duty_cycle(USB_PWM2_GET_DUTY());
+            PWM1_set_duty_cycle(USB_PWM1_GET_DUTY());
+            PWM2_set_duty_cycle(USB_PWM2_GET_DUTY());
         #endif
     }
 

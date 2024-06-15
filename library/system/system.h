@@ -74,7 +74,7 @@
 #define SYSTEM_FOSC 48000000UL
 #define SYSTEM_TOSC (SYSTEM_FOSC/4)
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG == 1
     #define DEBUG_REG_PIN_OUT   TRISC 

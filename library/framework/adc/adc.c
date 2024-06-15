@@ -10,6 +10,10 @@ struct
     uint16_t an[ADC_QTDE_CH];
 } ADC_variable;
 
+
+
+
+// --- OK
 // ATENÇÃO: TEMPO MINIMO PARA CARGA DO CAPACITOR = 2,45 us
 //
 // CONFIGURAÇÕES DO ADC
@@ -54,7 +58,9 @@ void ADC_init()
     set_bit(ADCON0, ADON);
 }
 
-// Gasta aproximadamente 6,5 us para executar (~ 153,846 KHz)
+
+// --- OK
+// Gasta aproximadamente 6,52 us para executar (~ 153,374 KHz)
 uint16_t ADC_read_channel(uint8_t ch)
 {
     // Define o canal ADC que sera utilizado
@@ -92,6 +98,9 @@ uint16_t ADC_read_channel(uint8_t ch)
     // Retorna digitalizacao em 10 bits
     return (ADRESH << 8) | ADRESL;
 }
+
+
+
 
 void ADC_read_all()
 {

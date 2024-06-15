@@ -2,9 +2,6 @@
 
 void system_init();
 
-uint16_t amostra = 0;
-
-
 void main()
 {
      // Adiciona tarefas ao sistema
@@ -26,24 +23,24 @@ void main()
      {
           if (timer0.is_finalizado[TIMER0_1MS])
           {
-               USB_READ_BUFF(); // Maximo de 7,40 us para executar
+               USB_READ_BUFF(); // Maximo de 17 us para executar
                timer0.is_finalizado[TIMER0_1MS] = false;
           }
 
           if (timer0.is_finalizado[TIMER0_3MS])
           {
-               ADC_read_all();  // Maximo de 380 us para executar
-               USB_index_data(); // Constante 3 us para executar
+               ADC_read_all();  // Maximo de 514 us para executar
+               USB_index_data(); // Maximo de 7,18 us para executar
                timer0.is_finalizado[TIMER0_3MS] = false;
           }
 
           if (timer0.is_finalizado[TIMER0_10MS])
           {
-               USB_SEND_DATA(); // Maximo de 5,68 ms para executar
+               USB_SEND_DATA(); // Maximo de 1,1 ms para executar
                timer0.is_finalizado[TIMER0_10MS] = false;
           }
 
-          amostra = ADC_read_channel(1);
+          
      }
 }
 
@@ -56,17 +53,17 @@ void system_init()
      PWM_init(3E3);
 #endif
      
-     //GPIO_init();
+     GPIO_init();
      
-     // // USB
-     // USB_init();
+     // USB
+     USB_init();
 
-     // // Timers
-     // TIMER0_init(1E-3);
-     // TIMER0_start(true);
+     // Timers
+     TIMER0_init(1E-3);
+     TIMER0_start(true);
 
      ADC_init();
 
-     // // Interrupcoes
-     // INTERRUPT_init();
+     // Interrupcoes
+     INTERRUPT_init();
 }

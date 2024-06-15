@@ -23,6 +23,7 @@
         "adc.h": "c",
         "soft_timer.h": "c",
         "painel_comando.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "lcd.h": "c"
     }
 }
