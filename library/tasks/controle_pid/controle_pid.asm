@@ -550,7 +550,7 @@ L_end_start:
 controle_pid_calculate_PID:
 
 ;controle_pid.c,151 :: 		static float calculate_PID(float setpoint, float nivel_tanque)
-;controle_pid.c,163 :: 		float        erro          = setpoint - nivel_tanque;
+;controle_pid.c,165 :: 		float        erro          = setpoint - nivel_tanque;
 	MOVF        FARG_controle_pid_calculate_PID_nivel_tanque+0, 0 
 	MOVWF       R4 
 	MOVF        FARG_controle_pid_calculate_PID_nivel_tanque+1, 0 
@@ -584,7 +584,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_calculate_PID_erro_L0+2 
 	MOVF        FLOC_controle_pid_calculate_PID+3, 0 
 	MOVWF       controle_pid_calculate_PID_erro_L0+3 
-;controle_pid.c,164 :: 		float        derivada      = (erro - erro_anterior) / DT;
+;controle_pid.c,166 :: 		float        derivada      = (erro - erro_anterior) / DT;
 	MOVF        controle_pid_calculate_PID_erro_anterior_L0+0, 0 
 	MOVWF       R4 
 	MOVF        controle_pid_calculate_PID_erro_anterior_L0+1, 0 
@@ -619,7 +619,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_calculate_PID_derivada_L0+2 
 	MOVF        R3, 0 
 	MOVWF       controle_pid_calculate_PID_derivada_L0+3 
-;controle_pid.c,166 :: 		integral = integral + (erro * DT);
+;controle_pid.c,168 :: 		integral = integral + (erro * DT);
 	MOVF        FLOC_controle_pid_calculate_PID+0, 0 
 	MOVWF       R0 
 	MOVF        FLOC_controle_pid_calculate_PID+1, 0 
@@ -654,7 +654,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_calculate_PID_integral_L0+2 
 	MOVF        R3, 0 
 	MOVWF       controle_pid_calculate_PID_integral_L0+3 
-;controle_pid.c,169 :: 		if (integral > MAX_VAL_SAT_INTEGRAL)
+;controle_pid.c,171 :: 		if (integral > MAX_VAL_SAT_INTEGRAL)
 	MOVF        R0, 0 
 	MOVWF       R4 
 	MOVF        R1, 0 
@@ -679,7 +679,7 @@ controle_pid_calculate_PID:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_controle_pid_calculate_PID23
-;controle_pid.c,170 :: 		integral = MAX_VAL_SAT_INTEGRAL;
+;controle_pid.c,172 :: 		integral = MAX_VAL_SAT_INTEGRAL;
 	MOVLW       0
 	MOVWF       controle_pid_calculate_PID_integral_L0+0 
 	MOVLW       0
@@ -690,7 +690,7 @@ controle_pid_calculate_PID:
 	MOVWF       controle_pid_calculate_PID_integral_L0+3 
 	GOTO        L_controle_pid_calculate_PID24
 L_controle_pid_calculate_PID23:
-;controle_pid.c,171 :: 		else if (integral < MIN_VAL_SAT_INTEGRAL)
+;controle_pid.c,173 :: 		else if (integral < MIN_VAL_SAT_INTEGRAL)
 	MOVLW       0
 	MOVWF       R4 
 	MOVLW       0
@@ -715,7 +715,7 @@ L_controle_pid_calculate_PID23:
 	MOVF        R0, 1 
 	BTFSC       STATUS+0, 2 
 	GOTO        L_controle_pid_calculate_PID25
-;controle_pid.c,172 :: 		integral = MIN_VAL_SAT_INTEGRAL;
+;controle_pid.c,174 :: 		integral = MIN_VAL_SAT_INTEGRAL;
 	MOVLW       0
 	MOVWF       controle_pid_calculate_PID_integral_L0+0 
 	MOVLW       0
@@ -726,7 +726,7 @@ L_controle_pid_calculate_PID23:
 	MOVWF       controle_pid_calculate_PID_integral_L0+3 
 L_controle_pid_calculate_PID25:
 L_controle_pid_calculate_PID24:
-;controle_pid.c,174 :: 		erro_anterior = erro;
+;controle_pid.c,176 :: 		erro_anterior = erro;
 	MOVF        controle_pid_calculate_PID_erro_L0+0, 0 
 	MOVWF       controle_pid_calculate_PID_erro_anterior_L0+0 
 	MOVF        controle_pid_calculate_PID_erro_L0+1, 0 
@@ -735,7 +735,7 @@ L_controle_pid_calculate_PID24:
 	MOVWF       controle_pid_calculate_PID_erro_anterior_L0+2 
 	MOVF        controle_pid_calculate_PID_erro_L0+3, 0 
 	MOVWF       controle_pid_calculate_PID_erro_anterior_L0+3 
-;controle_pid.c,176 :: 		return (KP * erro) + (KI * integral) + (KD * derivada);
+;controle_pid.c,178 :: 		return (KP * erro) + (KI * integral) + (KD * derivada);
 	MOVLW       0
 	MOVWF       R0 
 	MOVLW       0
@@ -821,7 +821,7 @@ L_controle_pid_calculate_PID24:
 	MOVF        FLOC_controle_pid_calculate_PID+3, 0 
 	MOVWF       R7 
 	CALL        _Add_32x32_FP+0, 0
-;controle_pid.c,177 :: 		}
+;controle_pid.c,179 :: 		}
 L_end_calculate_PID:
 	RETURN      0
 ; end of controle_pid_calculate_PID
