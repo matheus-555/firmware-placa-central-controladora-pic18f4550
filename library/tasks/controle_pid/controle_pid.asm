@@ -740,9 +740,9 @@ L_controle_pid_calculate_PID24:
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
-	MOVLW       32
+	MOVLW       88
 	MOVWF       R2 
-	MOVLW       129
+	MOVLW       131
 	MOVWF       R3 
 	MOVF        controle_pid_calculate_PID_erro_L0+0, 0 
 	MOVWF       R4 
@@ -765,9 +765,9 @@ L_controle_pid_calculate_PID24:
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
-	MOVLW       0
+	MOVLW       64
 	MOVWF       R2 
-	MOVLW       126
+	MOVLW       130
 	MOVWF       R3 
 	MOVF        controle_pid_calculate_PID_integral_L0+0, 0 
 	MOVWF       R4 
@@ -795,13 +795,13 @@ L_controle_pid_calculate_PID24:
 	MOVWF       FLOC_controle_pid_calculate_PID+2 
 	MOVF        R3, 0 
 	MOVWF       FLOC_controle_pid_calculate_PID+3 
-	MOVLW       205
+	MOVLW       0
 	MOVWF       R0 
-	MOVLW       204
+	MOVLW       0
 	MOVWF       R1 
-	MOVLW       76
+	MOVLW       115
 	MOVWF       R2 
-	MOVLW       124
+	MOVLW       130
 	MOVWF       R3 
 	MOVF        controle_pid_calculate_PID_derivada_L0+0, 0 
 	MOVWF       R4 

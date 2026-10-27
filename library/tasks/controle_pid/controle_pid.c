@@ -150,10 +150,17 @@ static void start()
 
 static float calculate_PID(float setpoint, float nivel_tanque)
 {
-    // KP = 5.0, KI = 0.5, KD = 0.2
+    // Obtido via sintonia empirica
     static const float KP = 5.0;
     static const float KI = 0.5;
     static const float KD = 0.2;
+
+    // obtido via sintonia de ziegler-nichols
+    // static const float KP = 27.0f;
+    // static const float KI = 12.0f;
+    // static const float KD = 15.1875f;
+
+
     static const float DT = CONTROLE_PID_MS_TO_SEG(CONTROLE_PID_START_CALC_MS);
 
     // Limite para antiwindup
